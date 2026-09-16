@@ -244,26 +244,34 @@ public class Strings {
 
 
 
-        Scanner s = new Scanner(System.in);
-        System.out.println("Enter size: ");
-        int size = s.nextInt();
-        System.out.println("Enter num: ");
-        int[] num = new int[size];
-        for(int i =0; i<size;i++){
-            num[i]= s.nextInt();
-        }
-        System.out.println("Even number are: ");
-        int count=0;
-        for(int i =0; i<size;i++){
+//        Scanner s = new Scanner(System.in);
+//        System.out.println("Enter size: ");
+//        int size = s.nextInt();
+//        System.out.println("Enter num: ");
+//        int[] num = new int[size];
+//        for(int i =0; i<size;i++){
+//            num[i]= s.nextInt();
+//        }
+//        System.out.println("Even number are: ");
+//        int count=0;
+//        for(int i =0; i<size;i++){
+//
+//                if(num[i]%2==0){
+//                    count++;
+//
+//
+//            }
+//
+//        }
+//        System.out.println(num[count]);
 
-                if(num[i]%2==0){
-                    count++;
 
 
-            }
+        String a = "Hello";
+        String b = "Hello";
 
-        }
-        System.out.println(count);
+        System.out.println(a == b);
+        System.out.println(a.equals(b));
 
 
 
