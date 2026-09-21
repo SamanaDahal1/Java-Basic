@@ -38,7 +38,7 @@ class product{
     public void displayProduct(){
         System.out.printf("name: %s \nprice: %d \nquantity: %d \n" ,name, price,quantity);
     }
-    public int sellProduct(int soldQuantity){
+    public void sellProduct(int soldQuantity){
         if(quantity>=soldQuantity){
             quantity-=soldQuantity;
             System.out.println("sold num of stock : "+ soldQuantity);
@@ -47,7 +47,7 @@ class product{
         else{
             System.out.println("Not enough stock");
         }
-        return soldQuantity;
+
     }
     public int stockValue(){
         return price * quantity;
