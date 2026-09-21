@@ -34,10 +34,12 @@ class Company{
 }
 public class questionSix {
     public static void main(String[] args){
+        Company.companyName = "ABC Technologies";
         Company emp1=new Company("Sarita",23);
         Company emp2 = new Company("Sajan",21);
         emp1.displayInfo();
         System.out.println();
         emp2.displayInfo();
+
     }
 }
