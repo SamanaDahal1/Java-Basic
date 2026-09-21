@@ -46,7 +46,7 @@ class Product{
     }
     public void applyDiscount(){
         if(calculateTotal()>10000){
-            int dis = (int)(calculateTotal() * 0.10);
+            int dis = (calculateTotal() * 10/100);
             System.out.println("Total After discount: "+ (calculateTotal() - dis));
         }
         else{
