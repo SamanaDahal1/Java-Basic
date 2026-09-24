@@ -27,8 +27,8 @@ Setter — a public method used to change a private variable.
 */
 
 class BankAccount2{
-   private String accountHolder;
-   private int balance;
+   String accountHolder;
+    int balance;
 
    BankAccount2 (String accountHolder,int balance){
        this.accountHolder=accountHolder;
@@ -48,10 +48,11 @@ class BankAccount2{
 public class QuestionNine {
     public static void main(String[] args){
         BankAccount2 person1= new BankAccount2("Eve",800);
-//        BankAccount2 person2 = new BankAccount2("Ave",1000);
+        BankAccount2 person2 = new BankAccount2("Ave",1000);
         person1.displayAccount();
         System.out.println(person1.getBalance());
         person1.setBalance(4500);
+        person1.balance=200;
         System.out.println();
         person1.displayAccount();
         System.out.println(person1.getBalance());
