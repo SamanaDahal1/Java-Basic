@@ -13,7 +13,6 @@ class Student{
         this.name=name;
         this.marks =marks;
     }
-
 }
 public class ArrayListPractice2 {
     public static void main(String[] args){
@@ -50,6 +49,5 @@ public class ArrayListPractice2 {
         System.out.println(studentList.contains(student3)+"\n");
 
         System.out.println(studentList.size());
-
     }
 }
