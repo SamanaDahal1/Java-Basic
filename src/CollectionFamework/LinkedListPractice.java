@@ -64,16 +64,6 @@ public class LinkedListPractice {
 
 
 
-
-
-
-
-
-
-
-
-
-
 //        Student1 studentGet =studentList.get(2);
 //        System.out.println(studentGet.id+" "+ studentGet.name+" "+studentGet.marks+"\n");
 //
