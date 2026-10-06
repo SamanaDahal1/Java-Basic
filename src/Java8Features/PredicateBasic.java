@@ -12,6 +12,8 @@ public class PredicateBasic {
 //                return false;
 //            }
 //        };
+
+
         Predicate<Integer> p =(num)->num%2==0;
        System.out.println( p.test(2));
        System.out.println( p.test(15));
