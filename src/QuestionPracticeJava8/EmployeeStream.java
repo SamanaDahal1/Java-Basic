@@ -2,10 +2,7 @@ package QuestionPracticeJava8;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 class Employee{
     int id;
@@ -19,11 +16,11 @@ class Employee{
         this.department=department;
         this.salary=salary;
     }
-    public String toString(){
-        return ("id: " + id + "name: " + name + "department: " + department + "salary: " + salary );
-    }
+//    public String toString(){
+//        return ("id: " + id + "name: " + name + "department: " + department + "salary: " + salary );
+//    }
 }
-public class EmployeeStreamFilter {
+public class EmployeeStream {
     public static void main(String[] args) {
         Scanner src = new Scanner(System.in);
         ArrayList<Employee> list = new ArrayList<>();
@@ -42,11 +39,13 @@ public class EmployeeStreamFilter {
              Employee employee = new Employee(id,name,department,salary);
              list.add(employee);
          }
-         List<Employee> filteredEmp = list.stream()
+         List<String> filteredEmp = list.stream()
                  .filter(employee->employee.salary>50000)
+                 .map(employee -> employee.name)
                  .toList();
 
          filteredEmp.forEach(System.out::println);
+
 
     }
 
