@@ -65,7 +65,7 @@ class Booking{
         System.out.println("Enter distance: ");
         distance = src.nextDouble();
 
-        System.out.printf("Name: %s\nRide Type: %s\nDistance: %f\n\t",name,rideType,distance);
+        System.out.printf("BasicQuestion.Name: %s\nRide Type: %s\nDistance: %f\n\t",name,rideType,distance);
 
 
 

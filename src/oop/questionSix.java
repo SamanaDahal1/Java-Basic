@@ -29,7 +29,7 @@ class Company{
         this.employeeId=employeeId;
     }
     public void displayInfo(){
-        System.out.printf("Company Name: %s\nEmployee Name: %s \nEmployee Id: %d\n",companyName,employeeName,employeeId);
+        System.out.printf("Company BasicQuestion.Name: %s\nEmployee BasicQuestion.Name: %s \nEmployee Id: %d\n",companyName,employeeName,employeeId);
     }
 }
 public class questionSix {

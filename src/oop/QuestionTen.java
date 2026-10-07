@@ -41,7 +41,7 @@ class Student1{
     }
 
     public void displayInfo(){
-        System.out.printf("Name: %s\nAge: %d\n",name,age);
+        System.out.printf("BasicQuestion.Name: %s\nAge: %d\n",name,age);
 
 
     }

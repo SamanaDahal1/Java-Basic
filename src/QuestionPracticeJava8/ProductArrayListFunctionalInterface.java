@@ -43,7 +43,7 @@ public class ProductArrayListFunctionalInterface {
         };
         list.forEach(product -> {
            if(checkPrice.test(product)){
-            System.out.println("Id: "+product.id +"Name: "+ product.name+"Price: "+ product.price);
+            System.out.println("Id: "+product.id +"BasicQuestion.Name: "+ product.name+"Price: "+ product.price);
             }
         });
     }

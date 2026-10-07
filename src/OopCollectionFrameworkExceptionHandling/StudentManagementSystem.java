@@ -96,7 +96,7 @@ public class StudentManagementSystem {
                     int id = src.nextInt();
                     try {
                         Student student = detail.get(id);
-                        System.out.println("Name: " +student.getName());
+                        System.out.println("BasicQuestion.Name: " +student.getName());
                         System.out.println("Marks: "+student.getMarks()+ "\n");
                     }
                     catch (NullPointerException e){
@@ -107,7 +107,7 @@ public class StudentManagementSystem {
                 else if (choice==3) {
                     for(Student student : detail.values()) {
                         System.out.println("Students detail: ");
-                       System.out.println("Name: "+student.getName());
+                       System.out.println("BasicQuestion.Name: "+student.getName());
                        System.out.println("Id: "+student.getId());
                        System.out.println("Mark: "+student.getMarks() +"\n");
                 }

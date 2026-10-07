@@ -26,7 +26,7 @@ public class Qn1 {
                 int marks = src.nextInt();
                 System.out.println();
                 list.add("id: " +id +" ");
-                list.add("Name: "+name + " ");
+                list.add("BasicQuestion.Name: "+name + " ");
                 list.add("Marks: "+marks + "\n");
             }
 

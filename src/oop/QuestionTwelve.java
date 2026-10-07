@@ -1,7 +1,7 @@
 package oop;
 
 /*
-Q12: Inheritance — Using Parent Methods
+Q12: Inheritance — Using Parent BasicQuestion.Methods
 
 Create a Person1 class with:
 
@@ -39,7 +39,7 @@ class Person1{
         this.age=age;
     }
     public void displayPerson1(){
-        System.out.printf("Name: %s\nAge: %d\n",name,age);
+        System.out.printf("BasicQuestion.Name: %s\nAge: %d\n",name,age);
     }
 
 }
@@ -52,7 +52,7 @@ class Student2 extends Person1{
 
     }
     public void displayStudent2(){
-        System.out.printf("Name: %s\nAge: %d\nCourse: %s\n",name,age,course);
+        System.out.printf("BasicQuestion.Name: %s\nAge: %d\nCourse: %s\n",name,age,course);
     }
 }
 public class QuestionTwelve {

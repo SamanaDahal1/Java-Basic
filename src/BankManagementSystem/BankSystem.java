@@ -19,7 +19,7 @@ class Account {
     }
 
     void displayAccount() {
-        System.out.printf("Account Holder Name: %s\nAccount Number: %d\nBalance: %d", holderName, accountNumber, balance);
+        System.out.printf("Account Holder BasicQuestion.Name: %s\nAccount Number: %d\nBalance: %d", holderName, accountNumber, balance);
 
     }
 

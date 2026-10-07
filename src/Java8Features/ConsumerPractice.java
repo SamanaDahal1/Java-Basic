@@ -14,7 +14,7 @@ public class ConsumerPractice {
             String name = src.next();
             stores.add(name);
         }
-        System.out.println("Name: ");
+        System.out.println("BasicQuestion.Name: ");
         for(String store : stores){
             consumer.accept(store);
         }

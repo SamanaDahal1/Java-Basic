@@ -17,7 +17,7 @@ In `main()`:
 * Test deposit and withdrawal on one account.
 * Test insufficient balance.
 
-**Concepts:** Class, Object, Constructor, `this`, Methods, Instance Variables, `if-else`.
+**Concepts:** Class, Object, Constructor, `this`, BasicQuestion.Methods, Instance Variables, `if-else`.
 
  */
 class BankAccount{

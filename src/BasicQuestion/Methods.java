@@ -1,3 +1,5 @@
+package BasicQuestion;
+
 import java.util.Scanner;
 
 public class Methods {
@@ -17,7 +19,7 @@ public class Methods {
     }
     //Return type void, displaying msg
     public static void greet(String name){
-        System.out.println("Hello, "+name);
+        System.out.println("BasicQuestion.Hello, "+name);
     }
     //return type int, subtracting 2 number
     public static int subtract(int a, int b){

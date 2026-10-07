@@ -56,7 +56,7 @@ public class OopCollectionFrameworkEmployeeManagement {
         }
         else if (choice==2) {
             for(Employee1 employee1: emp) {
-                System.out.print("Name: " + employee1.getName()+" ");
+                System.out.print("BasicQuestion.Name: " + employee1.getName()+" ");
                 System.out.println("ID: " + employee1.getId() + " Salary: " + employee1.getSalary());
         }
         }
@@ -65,7 +65,7 @@ public class OopCollectionFrameworkEmployeeManagement {
             int id = src.nextInt();
             for(Employee1 employee1: emp) {
                 if(employee1.getId()==id){
-                    System.out.println("Name: "+ employee1.getName()+ " Salary: "+ employee1.getSalary());
+                    System.out.println("BasicQuestion.Name: "+ employee1.getName()+ " Salary: "+ employee1.getSalary());
                 }
             }
 

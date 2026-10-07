@@ -63,7 +63,7 @@ class CollegeStudent extends Student3{
         this.college=college;
     }
     public void displayInfo(){
-        System.out.printf("Name: %s\nCourse: %s\nCollege: %s\n",name,course,college);
+        System.out.printf("BasicQuestion.Name: %s\nCourse: %s\nCollege: %s\n",name,course,college);
     }
 }
 public class QuestionThirteen {

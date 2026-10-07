@@ -43,7 +43,7 @@ public class ProductPredicateMultipleConditions {
         };
         list.forEach(products-> {
             if(checkPriceName.test(products)){
-                System.out.println("Name: "+products.name+" Id: "+products.id+" Price: "+products.price);
+                System.out.println("BasicQuestion.Name: "+products.name+" Id: "+products.id+" Price: "+products.price);
             }
         }  );
     }

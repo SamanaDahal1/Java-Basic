@@ -16,7 +16,7 @@ In `main()`:
 * Increase the salary of one employee
 * Display the updated salary
 
-**Focus:** Class, Object, Constructor, `this`, Methods, and changing object data.
+**Focus:** Class, Object, Constructor, `this`, BasicQuestion.Methods, and changing object data.
 
  */
 class Employee{

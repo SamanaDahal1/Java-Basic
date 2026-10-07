@@ -42,7 +42,7 @@ public class StudentManagementOopHashMap {
         System.out.println("Added Successfully");
         for(Students students : student.values()) {
 
-            System.out.print("Name: " + students.getName());
+            System.out.print("BasicQuestion.Name: " + students.getName());
             System.out.print(" ID: " + students.getId());
             System.out.println(" Mark: " + students.getMarks());
         }
@@ -52,7 +52,7 @@ public class StudentManagementOopHashMap {
         int id = src.nextInt();
         if(student.containsKey(id)) {
             Students students = student.get(id);
-            System.out.print("Name: " + students.getName());
+            System.out.print("BasicQuestion.Name: " + students.getName());
             System.out.println(" Mark: " + students.getMarks());
         }
         else {

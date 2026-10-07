@@ -20,7 +20,7 @@ public class ContactManager {
                 int size = src.nextInt();
                 src.nextLine();
                 for (int i = 0; i < size; i++) {
-                    System.out.print("Enter Name of a person: ");
+                    System.out.print("Enter BasicQuestion.Name of a person: ");
                     String name = src.nextLine();
                     System.out.print("Enter Phone Number of a person: ");
                     String phnNum = src.next();

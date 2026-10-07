@@ -15,7 +15,7 @@ In `main()`:
 * Create **3 Student objects** with different details.
 * Call `infoPrint()` for each object.
 
-**Concepts:** Class, Object, Constructor, `this`, Instance Variables, Methods.
+**Concepts:** Class, Object, Constructor, `this`, Instance Variables, BasicQuestion.Methods.
 
  */
 class Student{

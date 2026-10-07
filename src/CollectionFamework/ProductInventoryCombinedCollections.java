@@ -14,7 +14,7 @@ public class ProductInventoryCombinedCollections {
 
         HashMap<Integer,String> products = new HashMap<>();
         for(int i = 0; i <size; i++){
-            System.out.println("Enter Product Name: ");
+            System.out.println("Enter Product BasicQuestion.Name: ");
             String name = src.nextLine();
             System.out.println("Enter Product ID: ");
             int id = src.nextInt();

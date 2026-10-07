@@ -117,7 +117,7 @@ class Company{
     void fire(){
         System.out.println("Fire Employee Page\n");
         for (Employee employee : emp){
-            System.out.println("Name: " + employee.getName());
+            System.out.println("BasicQuestion.Name: " + employee.getName());
             System.out.println("ID: " + employee.getId()+"\n");
         }
         System.out.print("Enter id to remove employee: ");
@@ -132,7 +132,7 @@ class Company{
         System.out.println("Detail of Employees\n");
 
         for (Employee employee : emp) {
-            System.out.println("Name: " +employee.getName());
+            System.out.println("BasicQuestion.Name: " +employee.getName());
             System.out.println("ID: " + employee.getId());
             System.out.println("Base Salary: "+employee.getBaseSalary());
             System.out.println("Total: "+employee.calculate()+"\n");

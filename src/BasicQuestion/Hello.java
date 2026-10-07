@@ -1,7 +1,9 @@
+package BasicQuestion;
+
 import java.util.Scanner;
 class Hello{
     public static void main(String k[]){
-        System.out.println("Hello Guys");
+        System.out.println("BasicQuestion.Hello Guys");
         int a = 400;
         int b = 500;
         System.out.println(a+b);

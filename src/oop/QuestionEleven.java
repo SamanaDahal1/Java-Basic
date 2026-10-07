@@ -40,7 +40,7 @@ class Person{
         this.age=age;
     }
     public void displayPerson(){
-        System.out.printf("Name: %s\nAge: %d\n",name,age);
+        System.out.printf("BasicQuestion.Name: %s\nAge: %d\n",name,age);
 
     }
 
@@ -52,7 +52,7 @@ class Students extends Person{
         this.course=course;
     }
     public void displayStudent(){
-        System.out.printf("Name: %s\nAge: %d\nCourse: %s\n",name,age,course);
+        System.out.printf("BasicQuestion.Name: %s\nAge: %d\nCourse: %s\n",name,age,course);
 
     }
 }

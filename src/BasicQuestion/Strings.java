@@ -1,11 +1,8 @@
-import java.awt.*;
-import java.lang.reflect.Array;
-import java.nio.charset.StandardCharsets;
-import java.util.Scanner;
+package BasicQuestion;
 
 public class Strings {
     public static void main(String[] args) {
-//        String name = "Hello Programming";
+//        String name = "BasicQuestion.Hello Programming";
 //        String result = name.replace(" " , "");
 //
 //        System.out.println(result.length());
@@ -21,7 +18,7 @@ public class Strings {
 //        System.out.println( one.endsWith  ("code")    );
 //        System.out.println( one.endsWith  ("shower")  );
 //
-//        String check= ("Hello ");
+//        String check= ("BasicQuestion.Hello ");
 //        System.out.println(check.isEmpty());
 //        System.out.println(check.getBytes(StandardCharsets.UTF_8));
 
@@ -267,8 +264,8 @@ public class Strings {
 
 
 
-        String a = "Hello";
-        String b = "Hello";
+        String a = "BasicQuestion.Hello";
+        String b = "BasicQuestion.Hello";
 
         System.out.println(a == b);
         System.out.println(a.equals(b));
