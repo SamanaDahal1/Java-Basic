@@ -1,8 +1,7 @@
 package QuestionPracticeJava8;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
+import java.util.stream.Collectors;
 
 class Employee{
     int id;
@@ -17,8 +16,20 @@ class Employee{
         this.salary=salary;
     }
 //    public String toString(){
-//        return ("id: " + id + "name: " + name + "department: " + department + "salary: " + salary );
+//        return ("id: " + id + " name: " + name + " department: " + department + " salary: " + salary );
 //    }
+
+    public double getSalary() {
+        return salary;
+    }
+
+    public String getDepartment() {
+        return department;
+    }
+
+    public String getName() {
+        return name;
+    }
 }
 public class EmployeeStream {
     public static void main(String[] args) {
@@ -39,12 +50,16 @@ public class EmployeeStream {
              Employee employee = new Employee(id,name,department,salary);
              list.add(employee);
          }
-         List<String> filteredEmp = list.stream()
-                 .filter(employee->employee.salary>50000)
-                 .map(employee -> employee.name)
-                 .toList();
+         Map<String ,List<String>>filteredEmp = list.stream()
+//                 .filter(employee->employee.salary>50000)
+//                 .sorted(Comparator.comparing(Employee::getSalary).reversed())
+//                 .map(employee -> employee.name)
+                 .collect(Collectors.groupingBy(Employee::getDepartment,
+                         Collectors.mapping(Employee::getName,
+                                 Collectors.toList())));
 
-         filteredEmp.forEach(System.out::println);
+
+         filteredEmp.forEach((department, name)->System.out.println(department +" = "+ name));
 
 
     }
