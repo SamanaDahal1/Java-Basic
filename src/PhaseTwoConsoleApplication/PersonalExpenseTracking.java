@@ -4,7 +4,9 @@ import java.time.LocalDate;
 import java.time.Month;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.*;
+import java.util.function.Predicate;
 
 import static java.util.stream.Collectors.*;
 
@@ -85,9 +87,12 @@ class Budget {
     }
 
 }
-
-
 public class PersonalExpenseTracking {
+    static  void searchCondition(Collection<Expense> collections,Predicate<Expense> predicate){
+        collections.stream()
+                .filter(predicate)
+                .forEach(System.out::println);
+    }
     public static void main(String[] args) {
         Scanner src = new Scanner(System.in);
         Map <Long,Expense> storeExpense = new HashMap<>();
@@ -114,6 +119,10 @@ public class PersonalExpenseTracking {
                 for (int i = 0; i < size; i++) {
                     System.out.print("Enter your id : ");
                     int id = src.nextInt();
+                    if(storeExpense.containsKey((long)id)){
+                        System.out.println("Id already exist. Try again with new id.");
+                        continue;
+                    }
                     src.nextLine();
                     System.out.print("Enter title of Expense: ");
                     String title = src.nextLine();
@@ -139,25 +148,31 @@ public class PersonalExpenseTracking {
                         continue;
                     }
                     Category here = categories[choose - 1];
-                    src.nextLine();                     System.out.print("Enter Date (dd/MM/yyyy): ");
+                    src.nextLine();
+
+                    System.out.print("Enter Date (dd/MM/yyyy): ");
                     String dateUser = src.nextLine();
                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-                    LocalDate date = LocalDate.parse(dateUser,formatter);
-                    if(date.isAfter(nowDate)){
-                        System.out.println("Invalid Input Future date cant be store");
-                        continue;
+                    try {
+                        LocalDate date = LocalDate.parse(dateUser,formatter);
+                        if(date.isAfter(nowDate)){
+                            System.out.println("Invalid Input Future date cant be store");
+                            continue;
+                        }
+                        Expense expense = new Expense(id, title, amount, here, date);
+                        storeExpense.put((long)id,expense);
+                        System.out.println("Expenses Added Successfully");
+                    }catch (DateTimeParseException e){
+                        System.out.println("Follow format(dd/MM/yyyy)");
                     }
-                    Expense expense = new Expense(id, title, amount, here, date);
-                    storeExpense.put((long)id,expense);
-                    System.out.println("Expenses Added Successfully");
                 }
 
             } else if (choice == 2) {
                 System.out.println("Enter id to remove");
                 int id = src.nextInt();
 
-                    boolean found = storeExpense.removeIf(a -> a.getId() == id);
-                    if(!found){
+                    Expense found = storeExpense.remove((long)id);
+                    if(found==null){
                         System.out.println("ID Doesnt exist");
                     }
                     else {
@@ -172,36 +187,40 @@ public class PersonalExpenseTracking {
                         "3.Sorted by category");
                 int sortedChoice = src.nextInt();
                 if (sortedChoice == 1) {
-                    storeExpense.stream()
+                    storeExpense.values().stream()
                             .sorted(Comparator.comparing(Expense::getDate).reversed())
                             .forEach(System.out::println);
                 } else if (sortedChoice == 2) {
-                    storeExpense.stream()
+                    storeExpense.values().stream()
                             .sorted(Comparator.comparing(Expense::getAmount).reversed())
                             .forEach(System.out::println);
                 } else if (sortedChoice == 3) {
-                    storeExpense.stream()
+                    storeExpense.values().stream()
                             .sorted(Comparator.comparing(Expense::getCategory))
                             .forEach(System.out::println);
                 }
+                else {
+                    System.out.println("Invalid input. Choose 1,2 or 3");
+                }
+
             }
             else if (choice==4) {
-                Map<Category, Double> collectCategory = storeExpense.stream()
+                Map<Category, Double> collectCategory = storeExpense.values().stream()
                         .collect(groupingBy(Expense::getCategory,summingDouble(Expense::getAmount)));
                 System.out.println(collectCategory);
             }
             else if (choice==5) {
-                Map<YearMonth,Double> collectByDate = storeExpense.stream()
+                Map<YearMonth,Double> collectByDate = storeExpense.values().stream()
                         .collect(groupingBy(Expense -> YearMonth.from(Expense.getDate()),summingDouble(Expense::getAmount)));
                 System.out.println(collectByDate);
                 
             }
             else if (choice==6) {
-                List<Expense> listExpensive = storeExpense.stream()
+                List<Expense> listExpensive = storeExpense.values().stream()
                         .sorted(Comparator.comparing(Expense::getAmount).reversed())
                         .limit(3)
                         .toList();
-                double averageAmt = storeExpense.stream()
+                double averageAmt = storeExpense.values().stream()
                         .mapToDouble(Expense::getAmount)
                         .average().orElse(0.0);
 
@@ -223,6 +242,7 @@ public class PersonalExpenseTracking {
                     LocalDate fromDate = LocalDate.parse(fDateUser,fromFormatter);
                     if(fromDate.isAfter(nowDate)){
                         System.out.println("Invalid Input");
+                        continue;
                     }
                     System.out.print("Enter Date To (dd/MM/yyyy): ");
                     String toDateUser = src.nextLine();
@@ -230,35 +250,32 @@ public class PersonalExpenseTracking {
                     LocalDate toDate = LocalDate.parse(toDateUser,toFormatter);
                     if(fromDate.isAfter(toDate) || toDate.isAfter(nowDate)){
                         System.out.println("Invalid Input");
+                        continue;
                     }
                     else {
-                        storeExpense.stream()
-                                .filter(a -> !a.getDate().isBefore(fromDate) && !a.getDate().isAfter(toDate))
-                                .forEach(System.out::println);
+                        searchCondition(storeExpense.values(),
+                                a -> !a.getDate().isBefore(fromDate) && !a.getDate().isAfter(toDate) );
                     }
 
                 }
                 else if (chosen==2) {
                     System.out.println("Enter amount: ");
                     double amount = src.nextDouble();
-                    if(amount<0){
+                    if(amount<=0){
                         System.out.println("Invalid Amount. Should be more than 0");
                     }
                     else {
-                        storeExpense.stream()
-                                .filter(a->a.getAmount()>amount)
-                                .forEach(System.out::println);
-                    }
+                        searchCondition(storeExpense.values(),
+                                a->a.getAmount()>amount);
 
                 }
+                }
                 else if (chosen==3) {
-                    System.out.println("Enter keyword to search: ");
-                    String keyword = src.next();
+                    System.out.print("Enter keyword to search: ");
+                    String keyword = src.nextLine();
                     String ignoreCaseKeyword= keyword.toLowerCase();
-
-                    storeExpense.stream()
-                            .filter(a->a.getTitle().contains(ignoreCaseKeyword))
-                            .forEach(System.out::println);
+                    searchCondition(storeExpense.values(),
+                            a->a.getTitle().toLowerCase().contains(ignoreCaseKeyword));
                 }
 
             }
@@ -277,27 +294,44 @@ public class PersonalExpenseTracking {
                     if(setBudget==1){
                         System.out.print("Enter Budget for Health: ");
                         int healthBudget = src.nextInt();
-                        storeBudget.put(Category.health,new Budget(Category.health,healthBudget));
-                        System.out.println("Set Successfully");
-
+                        if(healthBudget<=0){
+                            System.out.println("Budget should be more than 0");
+                        }else {
+                            storeBudget.put(Category.health, new Budget(Category.health, healthBudget));
+                            System.out.println("Set Successfully");
+                        }
                     }
                     else if (setBudget==2) {
                         System.out.print("Enter Budget for Transportation: ");
                         int transportBudget = src.nextInt();
-                        storeBudget.put(Category.transportation,new Budget(Category.transportation,transportBudget));
-                        System.out.println("Set Successfully");
+                        if(transportBudget<=0){
+                            System.out.println("Budget should be more than 0");
+                        }else {
+                            storeBudget.put(Category.transportation,new Budget(Category.transportation,transportBudget));
+                            System.out.println("Set Successfully");
+                        }
+
                     }
                     else if (setBudget==3) {
                         System.out.print("Enter Budget for Technology: ");
                         int techBudget = src.nextInt();
-                        storeBudget.put(Category.technology,new Budget(Category.technology,techBudget));;
-                        System.out.println("Set Successfully");
+                        if(techBudget<=0){
+                            System.out.println("Budget should be more than 0");
+                        }else {
+                            storeBudget.put(Category.technology,new Budget(Category.technology,techBudget));
+                            System.out.println("Set Successfully");
+                        }
+
                     }
                     else if (setBudget==4) {
                         System.out.print("Enter Budget for Saving: ");
                         int saveBudget = src.nextInt();
-                        storeBudget.put(Category.saving,new Budget(Category.saving,saveBudget));
-                        System.out.println("Set Successfully");
+                        if(saveBudget <=0){
+                            System.out.println("Budget should be more than 0");
+                        }else {
+                            storeBudget.put(Category.saving,new Budget(Category.saving,saveBudget));
+                            System.out.println("Set Successfully");
+                        }
                     }
                     else {
                         System.out.println("Invalid input. Only accept 1/2/3/4");
@@ -309,7 +343,7 @@ public class PersonalExpenseTracking {
                         double amtbudget = budget.getMonthLimit();
                         double spent = 0;
 
-                        for (Expense expense : storeExpense) {
+                        for (Expense expense : storeExpense.values()) {
                             if (expense.getCategory() == budget.getCategory() && YearMonth.from(expense.getDate()).equals(YearMonth.now())) {
                                 spent += expense.getAmount();
                             }
@@ -327,6 +361,9 @@ public class PersonalExpenseTracking {
                             System.out.println("Warning! Over budget by " + (-minus));
                         }
                     }
+                }
+                else {
+                    System.out.println("Invalid input. Input should be 1 or 2");
                 }
             }
             else if (choice == 9) {
