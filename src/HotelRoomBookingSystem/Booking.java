@@ -1,8 +1,10 @@
 package HotelRoomBookingSystem;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
-public class Booking {
+public class Booking implements Cancellable {
     private int id;
     private Room room;
     private Guest guest;
@@ -37,4 +39,16 @@ public class Booking {
         return checkOut;
     }
 
+    @Override
+    public double calculateCancellationPending(LocalDateTime dateTime) {
+        LocalDateTime time = getCheckIn().atStartOfDay();
+        long hours =ChronoUnit.HOURS.between(dateTime,time);
+        if(hours<24 && hours>=0){
+            return room.getBasePricePerNight();
+        }
+        else {
+            return 0;
+        }
+
+    }
 }
