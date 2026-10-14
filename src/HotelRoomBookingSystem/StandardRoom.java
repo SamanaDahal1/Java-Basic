@@ -7,6 +7,11 @@ public class StandardRoom extends Room{
     }
 
     @Override
+    String getRoomType() {
+        return "Standard";
+    }
+
+    @Override
     double calculatePrice(int night) {
         return getBasePricePerNight()*night;
     }

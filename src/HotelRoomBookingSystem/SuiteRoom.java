@@ -6,6 +6,11 @@ public class SuiteRoom extends Room{
     }
 
     @Override
+    String getRoomType() {
+        return "Suite";
+    }
+
+    @Override
     double calculatePrice(int night) {
         double flatService=1000 ;
         return getBasePricePerNight()*night+ flatService;
