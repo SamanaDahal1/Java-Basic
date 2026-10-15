@@ -158,11 +158,25 @@ public class HotelRoomBookingSystem {
                 else {
                     for(Booking booking:bookings){
                         System.out.println("Booking Id: "+booking.getId() +"\nRoom Number: "+booking.getRoom().getNumber()+ "\nCheck in: "+booking.getCheckIn()+"\nCheck out: "+booking.getCheckOut());
+                        System.out.println("-------------------------------------");
                     }
                 }
-
             }
-            else if (numChoice==10) {
+            else if (numChoice==7) {
+                System.out.println("-----Check room occupancy-----\n");
+                System.out.println("Enter room number: ");
+                int roomNum = s.nextInt();
+                String userCheckInDate = s.next();
+                DateTimeFormatter dateTimeFormatterIn = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                LocalDate checkDate = LocalDate.parse(userCheckInDate,dateTimeFormatterIn);
+                if(service.isRoomOccupied(roomNum,checkDate)){
+                    System.out.println("Occupied on these dates");
+                }
+                else {
+                    System.out.println("Room Available for these dates");
+                }
+
+            } else if (numChoice==10) {
                 System.exit(0);
             }
 
