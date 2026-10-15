@@ -39,14 +39,16 @@ public class HotelRoomBookingSystem {
                 int basePricePerNight = s.nextInt();
                 if (roomType == 1) {
                     service.addRoom(new StandardRoom(roomNumber, basePricePerNight));
+                    System.out.println("Room Added successfully");
                 } else if (roomType == 2) {
                     service.addRoom(new DeluxeRoom(roomNumber, basePricePerNight));
+                    System.out.println("Room Added successfully");
                 } else if (roomType == 3) {
                     service.addRoom(new SuiteRoom(roomNumber, basePricePerNight));
+                    System.out.println("Room Added successfully");
                 } else {
                     System.out.println("Invalid Input.Please Enter 1 or 2 or 3");
                 }
-                System.out.println("Room Added successfully");
                 System.out.println("-------------------------------------");
             } else if (numChoice == 2) {
                 System.out.println("-----Register Guest-----\n");
@@ -59,7 +61,8 @@ public class HotelRoomBookingSystem {
                 String guestPhoneNum = s.next();
                 service.registerGuest(new Guest(guestId, guestName, guestPhoneNum));
                 System.out.println("-------------------------------------");
-            } else if (numChoice == 3) {
+            }
+            else if (numChoice == 3) {
                 System.out.println("-----Search Available Room-----\n");
                 System.out.print("Enter Check In date: (yyyy-MM-dd): ");
                 String userCheckInDate = s.next();
@@ -69,14 +72,28 @@ public class HotelRoomBookingSystem {
                 String userCheckOutDate = s.next();
                 DateTimeFormatter dateTimeFormatterOut = DateTimeFormatter.ofPattern("yyyy-MM-dd");
                 LocalDate checkOutDate = LocalDate.parse(userCheckOutDate, dateTimeFormatterOut);
-                System.out.print("Enter Room type:\n" +
-                        "Standard\n" +
-                        "Deluxe\n" +
-                        "Suite\n");
-                String roomType = s.next();
+                System.out.print("Enter Room type:Enter(1,2 or 3)\n" +
+                        "1.Standard\n" +
+                        "2.Deluxe\n" +
+                        "3.Suite\n");
+                String a = null;
+                int roomType = s.nextInt();
+                if(roomType==1){
+                    a="Standard";
+                }
+                else if(roomType==2){
+                    a="Deluxe";
+                }
+                else if(roomType==3){
+                    a="Suite";
+                }
+                else {
+                    System.out.println("Invalid input. Enter 1 or 2 or 3");
+                    break;
+                }
                 System.out.print("Enter price: ");
                 double price = s.nextDouble();
-                List<Room> availableRooms = service.searchAvailableRooms(checkInDate, checkOutDate, roomType, price);
+                List<Room> availableRooms = service.searchAvailableRooms(checkInDate, checkOutDate, a, price);
                 if (availableRooms.isEmpty()) {
                     System.out.println("No rooms available matching your criteria");
                 } else {
@@ -87,11 +104,11 @@ public class HotelRoomBookingSystem {
                 }
             } else if (numChoice == 4) {
                 System.out.println("-----Book a Room-----");
-                System.out.println("Enter Booking Id: ");
+                System.out.print("Enter Booking Id: ");
                 int bookingId = s.nextInt();
-                System.out.println("Enter Guest Id: ");
+                System.out.print("Enter Guest Id: ");
                 int guestId = s.nextInt();
-                System.out.println("Enter Room Number: ");
+                System.out.print("Enter Room Number: ");
                 int roomNumber = s.nextInt();
                 System.out.print("Enter Check In date:(yyyy-MM-dd): ");
                 String userCheckInDate = s.next();
@@ -104,7 +121,7 @@ public class HotelRoomBookingSystem {
                 Guest guest = service.storeGuests.get(guestId);
                 Room room = service.getRoomByNumber(roomNumber);
                 if (guest == null || room == null) {
-                    System.out.println("Not Found");
+                    System.out.println("Guest or Room Not Found");
                 } else {
                     try {
                         Booking booking = new Booking(bookingId, guest, room, checkInDate, checkOutDate);
@@ -147,15 +164,21 @@ public class HotelRoomBookingSystem {
                 System.out.println("-----Check room occupancy-----\n");
                 System.out.println("Enter room number: ");
                 int roomNum = s.nextInt();
+                System.out.print("Enter date:(yyyy-MM-dd): ");
                 String userCheckInDate = s.next();
                 DateTimeFormatter dateTimeFormatterIn = DateTimeFormatter.ofPattern("yyyy-MM-dd");
                 LocalDate checkDate = LocalDate.parse(userCheckInDate, dateTimeFormatterIn);
-                if (service.isRoomOccupied(roomNum, checkDate)) {
-                    System.out.println("Occupied on these dates");
-
+                if (service.getRoomByNumber(roomNum) == null) {
+                    System.out.println("Room does not exist");
                 } else {
-                    System.out.println("Room Available for these dates");
+                    if (service.isRoomOccupied(roomNum, checkDate)) {
+                        System.out.println("Occupied on these dates");
+
+                    } else {
+                        System.out.println("Room Available for these dates");
+                    }
                 }
+
                 System.out.println("-------------------------------------");
             } else if (numChoice == 8) {
                 System.out.println("-----View revenue by room type-----\n");
@@ -177,6 +200,9 @@ public class HotelRoomBookingSystem {
             else if (numChoice==10) {
                 System.out.println("Thanks for using Hotel Management System");
                 System.exit(0);
+            }
+            else {
+                System.out.println("Invalid input. Enter 1-10");
             }
         }
     }
