@@ -10,6 +10,7 @@ public class HotelService {
     Map<Integer, List<Booking>> storesBookings = new HashMap<>();
     Map<Integer, Queue<WaitingRequest>> storesWaitingRequest= new HashMap<>();
     Set<Integer> storesGuestId = new HashSet<>();
+    Map<Integer , Guest> storeGuests = new HashMap<>();
 
     void addRoom(Room room){
         storeRoom.put(room.getNumber(), room);
@@ -21,6 +22,7 @@ public class HotelService {
         int beforeSize = storesGuestId.size();
         storesGuestId.add(guest.getId());
         if(beforeSize<storesGuestId.size()){
+            storeGuests.put(guest.getId(), guest);
             System.out.println("Added Successfully");
         }
         else {
@@ -87,10 +89,14 @@ public class HotelService {
    }
    double cancelBooking(int bookingId, LocalDateTime cancellationTime) throws BookingNotFoundException{
         for(List<Booking> bookings: storesBookings.values()){
-            for(Booking booking: bookings){
+            Iterator<Booking> iterator = bookings.iterator();
+            while (iterator.hasNext()){
+               Booking booking= iterator.next();
                 if(booking.getId()==bookingId){
+                    int roomNumber = booking.getRoom().getNumber();
                     double penalty = booking.calculateCancellationPending(cancellationTime);
-                    bookings.remove(booking);
+                    iterator.remove();
+                    processWaitingList(roomNumber);
                     return penalty;
                 }
             }
@@ -167,16 +173,36 @@ public class HotelService {
                 for(Map.Entry<Integer,List<Booking>>checking :storesBookings.entrySet()){
                     int bookingCount =checking.getValue().size();
                     if(bookingCount>maxBooking){
-                        System.out.println("MOsted Booked Room :"  +checking.getKey() + " " +checking.getValue());
+                        maxBooking=bookingCount;
+                        mostBookedRoom=storeRoom.get(checking.getKey());
+                        System.out.println("Mosted Booked Room :"  + checking.getKey() + " " +checking.getValue());
                     }
                 }
+                return Optional.ofNullable(mostBookedRoom);
 
             }
+            boolean isRoomOccupied(int roomNumber,LocalDate date){
+                    for(Booking booking :storesBookings.get(roomNumber)){
+                        if(date.isBefore(booking.getCheckOut())&&(date.isAfter(booking.getCheckIn())||date.isEqual(booking.getCheckIn()))){
+                                return true;
+                        }
+                    }
+                return false;
+            }
+    void addToWaitingList(int roomNumber,Guest guest,LocalDate checkIn,LocalDate checkOut) {
 
+        Room room  = getRoomByNumber(roomNumber) ;
+        if(room==null) {
+            System.out.println("Room Number doesnt exist");
+            return;
+        }
+        if(!isRoomAvailable(room,checkIn,checkOut)){
+            WaitingRequest waitingRequest = new WaitingRequest(guest,checkIn,checkOut);
+            storesWaitingRequest.get(roomNumber).offer(waitingRequest);
 
+        }
 
-
-
+    }
    }
 
 
