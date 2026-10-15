@@ -2,6 +2,7 @@ package HotelRoomBookingSystem;
 
 import java.sql.Array;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,7 +11,7 @@ import java.util.Scanner;
 import java.util.function.Predicate;
 
 public class HotelRoomBookingSystem {
-    public static void main(String[] args) throws RoomNotAvailableException, InvalidDateRangeException {
+    public static void main(String[] args) throws RoomNotAvailableException, InvalidDateRangeException, BookingNotFoundException {
         HotelService service = new HotelService();
         Scanner s = new Scanner(System.in);
         while (true) {
@@ -120,6 +121,8 @@ public class HotelRoomBookingSystem {
                     try {
                         Booking booking = new Booking(bookingId,guest,room,checkInDate,checkOutDate);
                         service.addBooking(booking);
+                        System.out.println("Booked Successfully");
+                        System.out.println("-------------------------------------");
                     }
                     catch (InvalidDateRangeException e) {
                         System.out.println("Invalid Date Range.Checkout must be after check in");
@@ -128,9 +131,22 @@ public class HotelRoomBookingSystem {
                         System.out.println("Room is not available for these dates");
                     }
                 }
-
             }
-            else if (numChoice==10) {
+            else if (numChoice==5) {
+                System.out.print("Enter booking Id: ");
+                int bookingId = s.nextInt();
+                LocalDateTime cancellationTime = LocalDateTime.now();
+                try {
+                  double cancel =  service.cancelBooking(bookingId,cancellationTime);
+                  System.out.println("Booking Cancelled Successfully");
+                  System.out.println("Cancellation penalty: "+cancel);
+                    System.out.println("-------------------------------------");
+                }
+                catch (BookingNotFoundException e){
+                    System.out.println("Booking of this id doesnt exist.Check Booking id");
+                }
+
+            } else if (numChoice==10) {
                 System.exit(0);
             }
 
