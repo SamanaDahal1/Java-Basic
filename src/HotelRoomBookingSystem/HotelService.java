@@ -175,7 +175,6 @@ public class HotelService {
                     if(bookingCount>maxBooking){
                         maxBooking=bookingCount;
                         mostBookedRoom=storeRoom.get(checking.getKey());
-                        System.out.println("Mosted Booked Room :"  + checking.getKey() + " " +checking.getValue());
                     }
                 }
                 return Optional.ofNullable(mostBookedRoom);
