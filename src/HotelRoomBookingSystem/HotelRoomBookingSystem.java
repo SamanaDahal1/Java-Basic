@@ -4,10 +4,7 @@ import java.sql.Array;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 import java.util.function.Predicate;
 
 public class HotelRoomBookingSystem {
@@ -171,12 +168,27 @@ public class HotelRoomBookingSystem {
                 LocalDate checkDate = LocalDate.parse(userCheckInDate,dateTimeFormatterIn);
                 if(service.isRoomOccupied(roomNum,checkDate)){
                     System.out.println("Occupied on these dates");
+
                 }
                 else {
                     System.out.println("Room Available for these dates");
                 }
-
-            } else if (numChoice==10) {
+                System.out.println("-------------------------------------");
+            }
+            else if (numChoice==8) {
+                System.out.println("-----View revenue by room type-----\n");
+                Map<String,Double> revenue = service.calculateRevenueByRoomType();
+                if(revenue.isEmpty()){
+                    System.out.println("No revenue recorded yet");
+                }
+                else {
+                for(Map.Entry<String,Double> room : revenue.entrySet()){
+                    System.out.println("Room Type: " +room.getKey() +"\nRoom Revenue: " + room.getValue());
+                }
+                }
+                System.out.println("-------------------------------------");
+            }
+            else if (numChoice==10) {
                 System.exit(0);
             }
 
