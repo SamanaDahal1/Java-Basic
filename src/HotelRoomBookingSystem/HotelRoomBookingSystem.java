@@ -145,8 +145,24 @@ public class HotelRoomBookingSystem {
                 catch (BookingNotFoundException e){
                     System.out.println("Booking of this id doesnt exist.Check Booking id");
                 }
+            }
+            else if (numChoice==6) {
+                System.out.println("-----View bookings by guest-----\n");
+                System.out.println("Enter guest Id: ");
+                int guestId= s.nextInt();
+                List<Booking> bookings = service.getBookingByGuest(guestId);
 
-            } else if (numChoice==10) {
+                if(bookings.isEmpty()){
+                    System.out.println("No Booking found");
+                }
+                else {
+                    for(Booking booking:bookings){
+                        System.out.println("Booking Id: "+booking.getId() +"\nRoom Number: "+booking.getRoom().getNumber()+ "\nCheck in: "+booking.getCheckIn()+"\nCheck out: "+booking.getCheckOut());
+                    }
+                }
+
+            }
+            else if (numChoice==10) {
                 System.exit(0);
             }
 
