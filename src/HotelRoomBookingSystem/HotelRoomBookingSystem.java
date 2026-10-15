@@ -10,7 +10,7 @@ import java.util.Scanner;
 import java.util.function.Predicate;
 
 public class HotelRoomBookingSystem {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws RoomNotAvailableException, InvalidDateRangeException {
         HotelService service = new HotelService();
         Scanner s = new Scanner(System.in);
         while (true) {
@@ -111,8 +111,23 @@ public class HotelRoomBookingSystem {
                 String userCheckOutDate = s.next();
                 DateTimeFormatter dateTimeFormatterOut = DateTimeFormatter.ofPattern("yyyy-MM-dd");
                 LocalDate checkOutDate = LocalDate.parse(userCheckOutDate,dateTimeFormatterOut);
-
-
+                Guest guest=service.storeGuests.get(guestId);
+                Room room= service.getRoomByNumber(roomNumber);
+                if(guest==null || room==null){
+                    System.out.println("Not Found");
+                }
+                else {
+                    try {
+                        Booking booking = new Booking(bookingId,guest,room,checkInDate,checkOutDate);
+                        service.addBooking(booking);
+                    }
+                    catch (InvalidDateRangeException e) {
+                        System.out.println("Invalid Date Range.Checkout must be after check in");
+                    }
+                    catch (RoomNotAvailableException e){
+                        System.out.println("Room is not available for these dates");
+                    }
+                }
 
             }
             else if (numChoice==10) {
