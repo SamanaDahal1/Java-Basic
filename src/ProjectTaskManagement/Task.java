@@ -55,6 +55,9 @@ public class Task {
     public Project getProject() {
         return project;
     }
+    void setAssignee(User assignee) {
+        this.assignee = assignee;
+    }
 
     @Override
     public String toString() {
