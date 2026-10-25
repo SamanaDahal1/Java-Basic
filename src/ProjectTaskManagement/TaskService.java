@@ -44,4 +44,25 @@ public class TaskService {
         );
 
     }
+    public void changeStatus(int taskId, Status newStatus)
+            throws InvalidStatusTransitionException {
+
+        Task task = findTaskById(taskId)
+                .orElseThrow(() -> new TaskNotFoundException("Task not found"));
+
+        Status currentStatus = task.getStatus();
+
+        if (!currentStatus.canTransitionTo(newStatus)) {
+            throw new InvalidStatusTransitionException(
+                    "Cannot change status from " + currentStatus + " to " + newStatus
+            );
+        }
+
+        task.setStatus(newStatus);
+
+        activityLogger.log(
+                task.getProject(),
+                "Task status changed from " + currentStatus + " to " + newStatus
+        );
+    }
 }

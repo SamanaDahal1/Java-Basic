@@ -58,6 +58,9 @@ public class Task {
     void setAssignee(User assignee) {
         this.assignee = assignee;
     }
+    void setStatus(Status status) {
+        this.status = status;
+    }
 
     @Override
     public String toString() {
