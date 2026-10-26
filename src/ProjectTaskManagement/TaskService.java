@@ -12,6 +12,7 @@ public class TaskService {
     private final Map<Project, List<Task>> projectTasks = new HashMap<>();
     private final ActivityLogger activityLogger;
     private final Map<User,List<Task>> userTask= new HashMap<>();
+    UndoStack<Undoable> undoStack = new UndoStack<>();
 
     public TaskService(ActivityLogger activityLogger) {
         this.activityLogger = activityLogger;
@@ -51,6 +52,8 @@ public class TaskService {
         task.setAssignee(newAssignee);
         userTask.computeIfAbsent(newAssignee,p->new ArrayList<>());
         userTask.get(newAssignee).add(task);
+        AssignAction assignAction= new AssignAction(task,oldAssignee);
+        undoStack.push(assignAction);
         activityLogger.log(
                 project,
                 "Task assigned to: " + newAssignee.getName()
@@ -71,6 +74,8 @@ public class TaskService {
         }
 
         task.setStatus(newStatus);
+        StatusChangeAction statusChangeAction = new StatusChangeAction(task,currentStatus);
+        undoStack.push(statusChangeAction);
 
         activityLogger.log(
                 task.getProject(),
@@ -156,6 +161,7 @@ public class TaskService {
                 .toList();
 
     }
+
 
 
 }
