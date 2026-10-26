@@ -4,6 +4,7 @@ package ProjectTaskManagement;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.*;
 import java.util.function.Predicate;
 
@@ -51,10 +52,14 @@ public class ProjectTaskManagementApp {
                     for (Role role : roles) {
                         System.out.println(role);
                     }
-                    Role role= Role.valueOf(src.next().toUpperCase());
-
-                    users.put(id,new User(id,name,role));
-                    System.out.println("User Created Successfully");
+                    try {
+                        Role role = Role.valueOf(src.next().toUpperCase());
+                        users.put(id,new User(id,name,role));
+                        System.out.println("User Created Successfully");
+                    }
+                    catch (IllegalArgumentException e){
+                        System.out.println("Invalid Role");
+                    }
                 }
             }
             else if (menuChoice==2) {
@@ -115,10 +120,24 @@ public class ProjectTaskManagementApp {
                         for (Priority priority : priorities) {
                             System.out.println(priority);
                         }
-                        Priority priority = Priority.valueOf(src.next().toUpperCase());
+                        Priority priority;
+                        try {
+                           priority = Priority.valueOf(src.next().toUpperCase());
+                        }
+                        catch (IllegalArgumentException e){
+                            System.out.println("Invalid Priority");
+                            continue;
+                        }
                         System.out.print("Enter Task Deadline:(yyyy/MM/dd): ");
                         String dateString = src.next();
-                        LocalDate date = LocalDate.parse(dateString, DateTimeFormatter.ofPattern("yyyy/MM/dd"));
+                        LocalDate date;
+                        try {
+                            date = LocalDate.parse(dateString, DateTimeFormatter.ofPattern("yyyy/MM/dd"));
+                        }
+                        catch (DateTimeParseException e){
+                            System.out.println("Invalid Date Format");
+                            continue;
+                        }
                         System.out.print("Enter Project Id: ");
                         int projectId = src.nextInt();
                         Project project = projectService.findProjectById(projectId);
@@ -126,8 +145,13 @@ public class ProjectTaskManagementApp {
                             System.out.println("Project not Found");
                         }
                         else {
-                            taskService.createTask(id,title,description,assignee,priority,date,project);
-                            System.out.println("Task Created Successfully");
+                            try {
+                                taskService.createTask(id,title,description,assignee,priority,date,project);
+                                System.out.println("Task Created Successfully");
+                            }
+                            catch (UserNotInProjectException e){
+                                System.out.println(e.getMessage());
+                            }
                         }
                     }
                 }
@@ -142,8 +166,17 @@ public class ProjectTaskManagementApp {
                     System.out.println("User not found");
                 }
                 else {
-                    taskService.assignTask(taskId,user);
-                    System.out.println("task Assigned Successfully");
+                    try {
+                        taskService.assignTask(taskId,user);
+                        System.out.println("task Assigned Successfully");
+                    }
+                    catch(TaskNotFoundException e){
+                        System.out.println(e.getMessage());
+                    }
+                    catch (UserNotInProjectException e){
+                        System.out.println(e.getMessage());
+                    }
+
                 }
             }
             else if (menuChoice==6) {
@@ -154,20 +187,32 @@ public class ProjectTaskManagementApp {
                 for (Status status : statuses) {
                     System.out.println(status);
                 }
+                try {
+                    Status status = Status.valueOf(src.next().toUpperCase());
 
-                Status status= Status.valueOf(src.next().toUpperCase());
-                try{
-                taskService.changeStatus(taskId,status);
-                System.out.println("Task Status Changed Successfully");
-                } catch (InvalidStatusTransitionException e){
+                    taskService.changeStatus(taskId,status);
+                    System.out.println("Task Status Changed Successfully");
+                }
+                catch (IllegalArgumentException e){
+                    System.out.println("Invalid Status");
+                }
+                catch (InvalidStatusTransitionException e){
+                    System.out.println(e.getMessage());
+                }
+                catch (TaskNotFoundException e){
                     System.out.println(e.getMessage());
                 }
             }
             else if (menuChoice==7) {
                 System.out.print("Enter Task Id: ");
                 int taskId = src.nextInt();
-                taskService.deleteTask(taskId);
-                System.out.println("Task Delete Successfully");
+                try {
+                    taskService.deleteTask(taskId);
+                    System.out.println("Task Deleted Successfully");
+                }
+                catch (TaskNotFoundException e){
+                    System.out.println(e.getMessage());
+                }
             }
             else if (menuChoice==8) {
                 List<Predicate<Task>> filters  = new ArrayList<>();
@@ -273,7 +318,8 @@ public class ProjectTaskManagementApp {
             else if (menuChoice==11) {
                 System.out.println("Choose Option: \n" +
                         "1. View Overdue Tasks\n" +
-                        "2. View Tasks Due in Next 7 Days");
+                        "2. View Tasks Due in Next 7 Days\n" +
+                        "3. View Projects With No Open Tasks");
                 int dueChoice = src.nextInt();
                 List<Task> tasks;
                 if(dueChoice==1){
@@ -281,6 +327,20 @@ public class ProjectTaskManagementApp {
                 }
                 else if(dueChoice==2){
                     tasks = taskService.filterTasks(taskService.dueNext7Days());
+                }
+                else if(dueChoice==3){
+                    List<Project> projects =
+                            taskService.projectsWithNoOpenTasks(projectService.getAllProject());
+
+                    if(projects.isEmpty()){
+                        System.out.println("No Projects Found");
+                    }
+                    else {
+                        for(Project project : projects){
+                            System.out.println(project);
+                        }
+                    }
+                    continue;
                 }
                 else {
                     System.out.println("Invalid Option");
