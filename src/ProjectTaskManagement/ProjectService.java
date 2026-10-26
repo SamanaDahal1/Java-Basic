@@ -1,5 +1,6 @@
 package ProjectTaskManagement;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,6 +23,9 @@ public class ProjectService {
             Project project = findProjectById(projectId);
             project.addMember(user);
             activityLogger.log(project,"Member Added: " + user.getName() +"("+ user.getRole()+")");
+    }
+    public Collection<Project> getAllProject (){
+        return projects.values();
     }
 
 }

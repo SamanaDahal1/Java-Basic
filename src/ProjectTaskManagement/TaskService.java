@@ -1,11 +1,17 @@
 package ProjectTaskManagement;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.chrono.ChronoLocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class TaskService {
     private final Map<Project, List<Task>> projectTasks = new HashMap<>();
     private final ActivityLogger activityLogger;
+    private final Map<User,List<Task>> userTask= new HashMap<>();
 
     public TaskService(ActivityLogger activityLogger) {
         this.activityLogger = activityLogger;
@@ -20,6 +26,9 @@ public class TaskService {
       projectTasks.computeIfAbsent(project,p-> new ArrayList<>());
       projectTasks.get(project).add(task);
       activityLogger.log(project,"Task created: "+title);
+      userTask.computeIfAbsent(assignee,p->new ArrayList<>());
+      userTask.get(assignee).add(task);
+
      return task;
     }
     public Optional<Task> findTaskById(int id){
@@ -29,20 +38,23 @@ public class TaskService {
                 .findFirst();
     }
     public void assignTask(int taskId, User newAssignee){
+
        Task task=findTaskById(taskId)
                .orElseThrow(()->new TaskNotFoundException("Task Not FoundException"));
         Project project = task.getProject();
+        User oldAssignee = task.getAssignee();
 
         if (!project.getMembers().contains(newAssignee)) {
             throw new UserNotInProjectException("User is not a member of this project");
         }
+        userTask.get(oldAssignee).remove(task);
         task.setAssignee(newAssignee);
-
+        userTask.computeIfAbsent(newAssignee,p->new ArrayList<>());
+        userTask.get(newAssignee).add(task);
         activityLogger.log(
                 project,
                 "Task assigned to: " + newAssignee.getName()
         );
-
     }
     public void changeStatus(int taskId, Status newStatus)
             throws InvalidStatusTransitionException {
@@ -65,4 +77,86 @@ public class TaskService {
                 "Task status changed from " + currentStatus + " to " + newStatus
         );
     }
+    public List<Task> filterTasks (Predicate<Task> predicate){
+        return projectTasks.values().stream()
+                .flatMap(List::stream)
+                .filter(predicate)
+                .toList();
+    }
+    public Predicate<Task> byAssignee(User assignee){
+        return task -> task.getAssignee().equals(assignee);
+
+    }
+    public Predicate<Task> byStatus(Status status){
+        return task -> task.getStatus()==status;
+
+    }
+    public Predicate<Task> byPriority(Priority priority){
+        return task -> task.getPriority()==priority;
+
+    }
+    public Predicate<Task> overdue(){
+        return task -> task.getDeadline().isBefore(LocalDate.now())
+                &&
+                (task.getStatus()!=Status.DONE);
+
+    }
+    public List<Task> filterBy(Predicate<Task>... predicate){
+       Predicate<Task> combine =Filter.all(predicate);
+       return filterTasks(combine);
+
+    }
+    public List<Task> sortByDeadline(){
+       return projectTasks.values().stream()
+               .flatMap(List::stream)
+               .sorted(Comparator.comparing(Task::getDeadline))
+               .toList();
+    }
+    public List<Task> sortByPriorityThenDeadline(){
+        return projectTasks.values().stream()
+                .flatMap(List::stream)
+                .sorted(Comparator.comparing(Task::getPriority)
+                        .reversed()
+                        .thenComparing(Task::getDeadline))
+                .toList();
+    }
+    public List<Task> sortByTitle (){
+        return projectTasks.values().stream()
+                .flatMap(List::stream)
+                .sorted(Comparator.comparing(Task::getTitle))
+                .toList();
+    }
+    public long getOpenTaskCount (User user){
+       return userTask.getOrDefault(user,new ArrayList<>())
+                .stream()
+                .filter(a->a.getStatus()!=Status.DONE)
+                .count();
+
+    }
+    public Optional<LocalDate> getNearestDeadline (User user){
+        return userTask.getOrDefault(user,new ArrayList<>())
+                .stream()
+                .filter(i->i.getStatus()!=Status.DONE)
+                .map(Task::getDeadline)
+                .min(Comparator.naturalOrder());
+
+    }
+    public Predicate<Task> dueNext7Days(){
+        LocalDate todayDate =LocalDate.now();
+        return task-> {
+            long day = ChronoUnit.DAYS.between(todayDate, task.getDeadline());
+           return day>=0 && day<=7;
+        };
+    }
+    public List<Project> projectsWithNoOpenTasks (Collection<Project> projects){
+        return projects.stream()
+                .filter(project -> projectTasks.getOrDefault(project,new ArrayList<>())
+                        .stream()
+                        .noneMatch(task-> task.getStatus()!=Status.DONE))
+                .toList();
+
+    }
+
+
 }
+
