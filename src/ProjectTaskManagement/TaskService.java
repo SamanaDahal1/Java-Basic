@@ -1,10 +1,15 @@
 package ProjectTaskManagement;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.chrono.ChronoLocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
+import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -208,7 +213,32 @@ public class TaskService {
                 .stream()
                 .max(Comparator.comparing(entry->entry.getValue()))
                 .map(Map.Entry::getKey);
+    }
+    <R> List<R> transformTasks(Function<Task,R> function){
+         return projectTasks.values().stream()
+                  .flatMap(List::stream)
+                  .map(function)
+                  .toList();
 
     }
+    void forEachTask(Consumer<Task> consumer){
+        projectTasks.values().stream()
+                .flatMap(List::stream)
+                .forEach(consumer);
+    }
+    void exportProjectSummary(Project project,String fileName) throws IOException {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))){
+            writer.write("Project: "+project.getName());
+            writer.newLine();
+            writer.write("Task Count By Status: "+getTaskCountByStatus(project));
+            writer.newLine();
+            writer.write("Completion Percentage: "+getCompletionPercentage(project));
+            writer.newLine();
+            writer.write("Busiest Member: "+ getBusiestMember(project)
+                    .map(User::getName)
+                    .orElse("None"));
+        }
+    }
 }
+
 
