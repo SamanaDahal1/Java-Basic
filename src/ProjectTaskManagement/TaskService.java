@@ -48,11 +48,14 @@ public class TaskService {
         if (!project.getMembers().contains(newAssignee)) {
             throw new UserNotInProjectException("User is not a member of this project");
         }
-        userTask.get(oldAssignee).remove(task);
+        List<Task> oldAssigneeTaskList = userTask.get(oldAssignee);
+        oldAssigneeTaskList.remove(task);
         task.setAssignee(newAssignee);
         userTask.computeIfAbsent(newAssignee,p->new ArrayList<>());
-        userTask.get(newAssignee).add(task);
-        AssignAction assignAction= new AssignAction(task,oldAssignee);
+        List<Task> newAssigneeTaskList = userTask.get(newAssignee);
+        newAssigneeTaskList.add(task);
+
+        AssignAction assignAction= new AssignAction(task,oldAssignee,oldAssigneeTaskList,newAssigneeTaskList);
         undoStack.push(assignAction);
         activityLogger.log(
                 project,
@@ -161,8 +164,21 @@ public class TaskService {
                 .toList();
 
     }
+    public void deleteTask(int taskId){
+        Task task = findTaskById(taskId).orElseThrow(()->new TaskNotFoundException("Task Not Found"));
+        Project project = task.getProject();
+        User assignee = task.getAssignee();
+        List<Task> projectTaskList= projectTasks.get(project);
+        projectTaskList.remove(task);
+        List<Task> userTaskList= userTask.get(assignee);
+        userTaskList.remove(task);
+        DeleteAction deleteAction = new DeleteAction(task,projectTaskList,userTaskList);
+        undoStack.push(deleteAction);
+        activityLogger.log(project,"Task deleted: "+task.getTitle());
 
-
-
+    }
+    public  void undoLastAction(){
+        undoStack.undo();
+    }
 }
 
