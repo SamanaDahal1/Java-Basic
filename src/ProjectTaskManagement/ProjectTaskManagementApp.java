@@ -1,9 +1,8 @@
 package ProjectTaskManagement;
 
-import PhaseTwoConsoleApplication.Category;
 
+import java.io.IOException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.function.Predicate;
@@ -229,9 +228,154 @@ public class ProjectTaskManagementApp {
                         System.out.println("Please Enter number from 0-4");
                     }
                 }
+            }
+            else if (menuChoice==9) {
+                List<Task> sortedTasks;
+                System.out.println("Choose Sorting Option: \n" +
+                        "1. Sort by Deadline\n" +
+                        "2. Sort by Priority then Deadline\n" +
+                        "3. Sort by Title");
+                int sortChoice = src.nextInt();
+                if(sortChoice==1){
+                    sortedTasks = taskService.sortByDeadline();
+                }
+                else if(sortChoice==2){
+                    sortedTasks = taskService.sortByPriorityThenDeadline();
+                }
+                else if(sortChoice==3){
+                    sortedTasks = taskService.sortByTitle();
+                }
+                else {
+                    System.out.println("Invalid Sorting Option");
+                    continue;
+                }
+                for(Task task : sortedTasks){
+                    System.out.println(task);
+                }
+            }
+            else if (menuChoice==10) {
+                System.out.print("Enter User Id: ");
+                int userId = src.nextInt();
+                User user = users.get(userId);
+                if(user==null){
+                    System.out.println("User not found");
+                }
+                else {
+                    long openTaskCount = taskService.getOpenTaskCount(user);
+                    Optional<LocalDate> nearestDeadline = taskService.getNearestDeadline(user);
+
+                    System.out.println("User: "+user.getName());
+                    System.out.println("Open Tasks: "+openTaskCount);
+                    System.out.println("Nearest Deadline: "+
+                            nearestDeadline.map(LocalDate::toString).orElse("None"));
+                }
+            }
+            else if (menuChoice==11) {
+                System.out.println("Choose Option: \n" +
+                        "1. View Overdue Tasks\n" +
+                        "2. View Tasks Due in Next 7 Days");
+                int dueChoice = src.nextInt();
+                List<Task> tasks;
+                if(dueChoice==1){
+                    tasks = taskService.filterTasks(taskService.overdue());
+                }
+                else if(dueChoice==2){
+                    tasks = taskService.filterTasks(taskService.dueNext7Days());
+                }
+                else {
+                    System.out.println("Invalid Option");
+                    continue;
+                }
+                if(tasks.isEmpty()){
+                    System.out.println("No Tasks Found");
+                }
+                else {
+                    for(Task task : tasks){
+                        System.out.println(task);
+                    }
+                }
+            }
+            else if (menuChoice==12) {
+                System.out.print("Enter Project Id: ");
+                int projectId = src.nextInt();
+
+                Project project = projectService.findProjectById(projectId);
+
+                if(project==null){
+                    System.out.println("Project not found");
+                }
+                else {
+                    LinkedList<ActivityLog> logs = activityLogger.getLogs(project);
+
+                    if(logs.isEmpty()){
+                        System.out.println("No Activity Found");
+                    }
+                    else {
+                        for(ActivityLog log : logs){
+                            System.out.println(log);
+                        }
+                    }
+                }
+            }
+            else if (menuChoice==13) {
+                taskService.undoLastAction();
+            }
+            else if (menuChoice==14) {
+                System.out.print("Enter Project Id: ");
+                int projectId = src.nextInt();
+
+                Project project = projectService.findProjectById(projectId);
+
+                if(project==null){
+                    System.out.println("Project not found");
+                }
+                else {
+                    System.out.println("Project: "+project.getName());
+                    System.out.println("Task Count By Status: "+
+                            taskService.getTaskCountByStatus(project));
+                    System.out.println("Completion Percentage: "+
+                            taskService.getCompletionPercentage(project)+"%");
+                    System.out.println("Busiest Member: "+
+                            taskService.getBusiestMember(project)
+                                    .map(User::getName)
+                                    .orElse("None"));
+                }
+            }
+            else if (menuChoice==15) {
+                System.out.print("Enter Project Id: ");
+                int projectId = src.nextInt();
+
+                Project project = projectService.findProjectById(projectId);
+
+                if(project==null){
+                    System.out.println("Project not found");
+                }
+                else {
+                    src.nextLine();
+                    System.out.print("Enter File Name: ");
+                    String fileName = src.nextLine();
+
+                    try {
+                        taskService.exportProjectSummary(project,fileName);
+                        System.out.println("Project Summary Exported Successfully");
+                    }
+                    catch (IOException e){
+                        System.out.println("Could not export project summary");
+                    }
+                }
+            }
+            else if (menuChoice==0) {
+                System.out.println("Thanks For Using Project Task Management System");
+                System.exit(0);
 
             }
+            else {
+                System.out.println("Please enter valid input (0 to 15)");
+            }
+
+
+        }
         }
 
     }
-}
+
