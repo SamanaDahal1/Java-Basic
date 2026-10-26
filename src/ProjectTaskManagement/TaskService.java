@@ -180,5 +180,35 @@ public class TaskService {
     public  void undoLastAction(){
         undoStack.undo();
     }
+    Map<Status,Long> getTaskCountByStatus (Project project){
+        List<Task> tasks = projectTasks.getOrDefault(project,new ArrayList<>());
+        return tasks.stream()
+                .collect(Collectors.groupingBy(Task::getStatus,()->new EnumMap<>(Status.class) ,Collectors.counting()));
+    }
+    double getCompletionPercentage(Project project){
+        List<Task> tasks = projectTasks.getOrDefault(project,new ArrayList<>());
+        int totalTask = tasks.size();
+        if (totalTask == 0){
+            return 0.0;
+        }
+        else {
+        double completedTasks =tasks.stream()
+                .filter(task -> Status.DONE==task.getStatus())
+                .count();
+            return (completedTasks / totalTask * 100);
+        }
+    }
+    Optional<User> getBusiestMember(Project project){
+        List<Task> tasks = projectTasks.getOrDefault(project,new ArrayList<>());
+       return tasks.stream()
+                .filter(i->i.getStatus()!=Status.DONE)
+
+                .collect(Collectors.groupingBy(Task::getAssignee,Collectors.counting()))
+                .entrySet()
+                .stream()
+                .max(Comparator.comparing(entry->entry.getValue()))
+                .map(Map.Entry::getKey);
+
+    }
 }
 
