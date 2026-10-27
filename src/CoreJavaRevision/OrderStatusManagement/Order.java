@@ -1,7 +1,7 @@
 package CoreJavaRevision.OrderStatusManagement;
 
 public class Order {
-    int id;
+    private int id;
     String customerName;
     double amount;
     Status status;
@@ -10,6 +10,10 @@ public class Order {
         this.customerName=customerName;
         this.amount=amount;
         this.status=status;
+    }
+
+    public int getId() {
+        return id;
     }
 
     void display(){
