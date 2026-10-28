@@ -28,9 +28,8 @@ public class Main {
                     "\nEmployee Salary: "+ emp.getSalary()+"\n");
         });
         double totalSalary=employeeService.totalSalary();
-        System.out.println("--Total Salary of all--\n"+totalSalary);
-
-
-
+        System.out.println("--Total Salary of all--\n"+totalSalary+"\n");
+        double averageSalary = employeeService.averageSalary();
+        System.out.println("--Average Salary--\n"+averageSalary+"\n");
     }
 }

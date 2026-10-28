@@ -1,9 +1,6 @@
 package CoreJavaRevision.EmployeeManagement;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class EmployeeService {
     Map<Integer,Employee> listEmployee=new HashMap<>();
@@ -30,6 +27,12 @@ public class EmployeeService {
         return listEmployee.values().stream()
                 .mapToDouble(emp -> emp.getSalary())
                 .sum();
+    }
+    double averageSalary(){
+         return listEmployee.values().stream()
+                .mapToDouble(i -> i.getSalary())
+                .average()
+                 .orElse(0.0);
     }
     void displayAllEmp(){
         listEmployee.forEach((integer, employee) -> {
