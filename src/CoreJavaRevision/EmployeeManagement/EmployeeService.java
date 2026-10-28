@@ -1,6 +1,8 @@
 package CoreJavaRevision.EmployeeManagement;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class EmployeeService {
@@ -10,6 +12,13 @@ public class EmployeeService {
     }
     Employee  searchId (int id){
         return listEmployee.get(id);
+    }
+    List<Employee> searchDepartment(String department){
+        List<Employee> list = listEmployee.values().stream()
+                .filter(i -> i.getDepartment().equalsIgnoreCase(department))
+                .toList();
+
+        return list;
     }
     void displayAllEmp(){
         listEmployee.forEach((integer, employee) -> {
