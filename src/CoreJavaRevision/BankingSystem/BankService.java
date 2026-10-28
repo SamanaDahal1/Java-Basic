@@ -17,21 +17,21 @@ public class BankService {
             throw new AccountNotFoundException("Account Not Found");
         }
 
-    double deposit(int accountNum,double amount) throws AccountNotFoundException {
+    double deposit(int accountNum,double amount) throws AccountNotFoundException, InvalidAmountException {
         BankAccount bankAccount= findAccountByNumber(accountNum);
         if(bankAccount!=null){
             return bankAccount.deposit(amount);
         }
         return 0;
     }
-    double withdraw(int accountNum,double amount) throws AccountNotFoundException ,InsufficientBalanceException {
+    double withdraw(int accountNum,double amount) throws AccountNotFoundException, InsufficientBalanceException, InvalidAmountException {
         BankAccount bankAccount = findAccountByNumber(accountNum);
         if(bankAccount!=null){
             return bankAccount.withdraw(amount);
         }
         throw new InsufficientBalanceException("Account doesnt have sufficient balance");
     }
-    void displayAllAccounts(){
+    void displayAllAccounts() {
         for(BankAccount bankAccount : bankAccounts){
             System.out.println("Account Number: "+bankAccount.getAccountNumber()+
                     "\nAccount Holder Name: "+bankAccount.getHolderName()+

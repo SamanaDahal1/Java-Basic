@@ -10,9 +10,9 @@ public class Main {
         try {
             bankService.deposit(1,2000);
             bankService.withdraw(1,15000);
-            bankService.withdraw(2,10000);
+            bankService.withdraw(2,-10000);
         }
-        catch (AccountNotFoundException | InsufficientBalanceException e){
+        catch (AccountNotFoundException | InsufficientBalanceException | InvalidAmountException e){
             System.out.println(e.getMessage());
         }
 

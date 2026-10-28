@@ -9,7 +9,10 @@ public class CurrentAccount extends BankAccount {
     }
 
     @Override
-    double withdraw(double amount) throws InsufficientBalanceException{
+    double withdraw(double amount) throws InsufficientBalanceException,InvalidAmountException{
+        if(amount<=0){
+            throw new InvalidAmountException("Amount must be greater than 0");
+        }
         double balance =getBalance()+overdraftLimit;
         if(balance>=amount){
             setBalance(getBalance()-amount);

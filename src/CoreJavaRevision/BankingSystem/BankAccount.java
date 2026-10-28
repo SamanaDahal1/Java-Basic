@@ -26,9 +26,12 @@ abstract class BankAccount {
         this.balance = balance;
     }
 
-    double deposit(double amount){
+    double deposit(double amount) throws InvalidAmountException{
+        if(amount>0){
         return balance+=amount;
+        }
+        throw new InvalidAmountException("Deposit Amount should be greater than 0");
     }
-    abstract double withdraw(double amount) throws InsufficientBalanceException;
+    abstract double withdraw(double amount) throws InsufficientBalanceException,InvalidAmountException;
     abstract double calculateInterest();
 }
