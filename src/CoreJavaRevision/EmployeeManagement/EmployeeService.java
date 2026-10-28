@@ -26,6 +26,11 @@ public class EmployeeService {
                 .toList();
         return list;
     }
+    double totalSalary(){
+        return listEmployee.values().stream()
+                .mapToDouble(emp -> emp.getSalary())
+                .sum();
+    }
     void displayAllEmp(){
         listEmployee.forEach((integer, employee) -> {
             System.out.println("Employee Id: "+employee.getId()+

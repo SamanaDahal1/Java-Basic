@@ -27,6 +27,10 @@ public class Main {
             System.out.println("Employee Name: "+emp.getName()+
                     "\nEmployee Salary: "+ emp.getSalary()+"\n");
         });
+        double totalSalary=employeeService.totalSalary();
+        System.out.println("--Total Salary of all--\n"+totalSalary);
+
+
 
     }
 }
