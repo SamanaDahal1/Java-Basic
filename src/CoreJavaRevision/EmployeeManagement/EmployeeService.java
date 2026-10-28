@@ -8,6 +8,9 @@ public class EmployeeService {
     void addEmployee(Employee employee){
         listEmployee.put(employee.getId(),employee);
     }
+    Employee  searchId (int id){
+        return listEmployee.get(id);
+    }
     void displayAllEmp(){
         listEmployee.forEach((integer, employee) -> {
             System.out.println("Employee Id: "+employee.getId()+
