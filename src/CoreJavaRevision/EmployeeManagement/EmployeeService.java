@@ -20,6 +20,12 @@ public class EmployeeService {
 
         return list;
     }
+    List<Employee> greaterSalary(double salary){
+        List<Employee> list = listEmployee.values().stream()
+                .filter(i -> i.getSalary() > salary)
+                .toList();
+        return list;
+    }
     void displayAllEmp(){
         listEmployee.forEach((integer, employee) -> {
             System.out.println("Employee Id: "+employee.getId()+
@@ -28,4 +34,5 @@ public class EmployeeService {
                     "\nSalary: "+employee.getSalary()+"\n");
         });
     }
+
 }

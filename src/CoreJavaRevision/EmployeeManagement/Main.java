@@ -21,7 +21,12 @@ public class Main {
             System.out.println("Employee Id: "+emp.getId()+
                     "\nEmployee Name: "+emp.getName()+"\n");
         });
-
+        List<Employee> salaryGreater=employeeService.greaterSalary(60000);
+        System.out.println("--Salary Search--");
+        salaryGreater.forEach((emp) -> {
+            System.out.println("Employee Name: "+emp.getName()+
+                    "\nEmployee Salary: "+ emp.getSalary()+"\n");
+        });
 
     }
 }
