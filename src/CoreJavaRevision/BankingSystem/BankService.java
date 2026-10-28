@@ -5,7 +5,12 @@ import java.util.List;
 
 public class BankService {
     List<BankAccount> bankAccounts = new ArrayList<>();
-    void addBankAccount(BankAccount bankAccount){
+    void addBankAccount(BankAccount bankAccount) throws DuplicateAccountException{
+        for(BankAccount bankAcc:bankAccounts){
+            if(bankAcc.getAccountNumber()==bankAccount.getAccountNumber()){
+                throw new DuplicateAccountException("Account number already exist");
+            }
+        }
         bankAccounts.add(bankAccount);
     }
     BankAccount findAccountByNumber (int accountNum) throws AccountNotFoundException{
@@ -19,24 +24,28 @@ public class BankService {
 
     double deposit(int accountNum,double amount) throws AccountNotFoundException, InvalidAmountException {
         BankAccount bankAccount= findAccountByNumber(accountNum);
-        if(bankAccount!=null){
             return bankAccount.deposit(amount);
-        }
-        return 0;
     }
-    double withdraw(int accountNum,double amount) throws AccountNotFoundException, InsufficientBalanceException, InvalidAmountException {
+    double withdraw(int accountNum,double amount) throws AccountNotFoundException, InvalidAmountException, InsufficientBalanceException {
         BankAccount bankAccount = findAccountByNumber(accountNum);
-        if(bankAccount!=null){
             return bankAccount.withdraw(amount);
+    }
+    void transferMoney(int fromAccountNumber, int toAccountNumber,double amount) throws AccountNotFoundException, InsufficientBalanceException, InvalidAmountException,InvalidTransferException {
+        BankAccount sender = findAccountByNumber(fromAccountNumber);
+        BankAccount receiver =findAccountByNumber(toAccountNumber);
+        if(sender==receiver){
+            throw new InvalidTransferException("Cant transfer money in same account");
         }
-        throw new InsufficientBalanceException("Account doesnt have sufficient balance");
+        sender.withdraw(amount);
+        receiver.deposit(amount);
+
     }
     void displayAllAccounts() {
         for(BankAccount bankAccount : bankAccounts){
             System.out.println("Account Number: "+bankAccount.getAccountNumber()+
                     "\nAccount Holder Name: "+bankAccount.getHolderName()+
                     "\nCurrent Balance: "+bankAccount.getBalance()+
-                    "\nInterest: "+bankAccount.calculateInterest());
+                    "\nInterest: "+bankAccount.calculateInterest()+"\n");
         }
     }
 
