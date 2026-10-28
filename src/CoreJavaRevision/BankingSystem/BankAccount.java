@@ -22,6 +22,10 @@ abstract class BankAccount {
         return balance;
     }
 
+    protected void setBalance(double balance) {
+        this.balance = balance;
+    }
+
     double deposit(double amount){
         return balance+=amount;
     }

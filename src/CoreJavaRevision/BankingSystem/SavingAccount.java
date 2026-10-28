@@ -5,19 +5,17 @@ public class SavingAccount extends BankAccount{
         super(accountNumber, holderName, balance);
     }
 
-    @Override
-    double deposit(double amount) {
-        return 0;
-    }
 
     @Override
     double withdraw(double amount) {
-        return 0;
+        if(amount<=getBalance()){
+          setBalance(getBalance()-amount);
+        }
+        return getBalance();
     }
 
     @Override
     double calculateInterest() {
-        return 0;
+        return getBalance() * 0.04;
     }
-
 }
