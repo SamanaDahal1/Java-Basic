@@ -8,27 +8,28 @@ public class BankService {
     void addBankAccount(BankAccount bankAccount){
         bankAccounts.add(bankAccount);
     }
-    BankAccount findAccountByNumber(int accountNum){
-        for(BankAccount bankAccount :bankAccounts){
-            if(bankAccount.getAccountNumber()==accountNum){
-                return bankAccount;
+    BankAccount findAccountByNumber (int accountNum) throws AccountNotFoundException{
+            for(BankAccount bankAccount :bankAccounts){
+                if(bankAccount.getAccountNumber()==accountNum){
+                    return bankAccount;
+                }
             }
+            throw new AccountNotFoundException("Account Not Found");
         }
-        return null;
-    }
-    double deposit(int accountNum,double amount){
+
+    double deposit(int accountNum,double amount) throws AccountNotFoundException {
         BankAccount bankAccount= findAccountByNumber(accountNum);
         if(bankAccount!=null){
             return bankAccount.deposit(amount);
         }
         return 0;
     }
-    double withdraw(int accountNum,double amount){
+    double withdraw(int accountNum,double amount) throws AccountNotFoundException ,InsufficientBalanceException {
         BankAccount bankAccount = findAccountByNumber(accountNum);
         if(bankAccount!=null){
             return bankAccount.withdraw(amount);
         }
-        return 0;
+        throw new InsufficientBalanceException("Account doesnt have sufficient balance");
     }
     void displayAllAccounts(){
         for(BankAccount bankAccount : bankAccounts){

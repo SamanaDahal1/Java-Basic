@@ -29,6 +29,6 @@ abstract class BankAccount {
     double deposit(double amount){
         return balance+=amount;
     }
-    abstract double withdraw(double amount);
+    abstract double withdraw(double amount) throws InsufficientBalanceException;
     abstract double calculateInterest();
 }

@@ -7,9 +7,12 @@ public class SavingAccount extends BankAccount{
 
 
     @Override
-    double withdraw(double amount) {
+    double withdraw(double amount) throws InsufficientBalanceException {
         if(amount<=getBalance()){
           setBalance(getBalance()-amount);
+        }
+        else {
+            throw new InsufficientBalanceException("You have Insufficient balance");
         }
         return getBalance();
     }
