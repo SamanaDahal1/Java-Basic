@@ -4,10 +4,10 @@ public class Order {
     private  int id;
     private String customerName;
     private String category;
-    private int amount;
+    private double amount;
     private String status;
 
-    Order(int id,String customerName,String category,int amount,String status){
+    Order(int id,String customerName,String category,double amount,String status){
         this.id=id;
         this.customerName=customerName;
         this.amount=amount;
@@ -26,7 +26,7 @@ public class Order {
         return category;
     }
 
-    public int getAmount() {
+    public double getAmount() {
         return amount;
     }
 

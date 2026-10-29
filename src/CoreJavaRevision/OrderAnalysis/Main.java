@@ -1,7 +1,6 @@
 package CoreJavaRevision.OrderAnalysis;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
@@ -54,7 +53,40 @@ public class Main {
         for(String order : uniqueName){
             System.out.println("Customer Name: "+order);
         }
+        //top 3 most expensive orders from highest to lower amount
+        List<Order> expensiveOrder = orderList.stream()
+                .sorted(Comparator.comparingDouble(Order::getAmount).reversed())
+                .limit(3)
+                .toList();
+        System.out.println("\n--Top 3 Expensive Order");
+        for(Order order : expensiveOrder){
+            System.out.println("Customer Name: "+order.getCustomerName() +
+                    "\nAmount: "+ order.getAmount());
+        }
+        //Calculate amount total amount of all "Done" orders
+        double totalAmountOfDoneStatus = orderList.stream()
+                .filter(i -> i.getStatus().equalsIgnoreCase("Done"))
+                .mapToDouble(Order::getAmount)
+                .sum();
+        System.out.println("\n--Total Amount of 'Done' Status--\n"+totalAmountOfDoneStatus);
+
+        //Average amount of "Done" order
+        OptionalDouble averageAmountOfDoneStatus = orderList.stream()
+                .filter(i -> i.getStatus().equalsIgnoreCase("Done"))
+                .mapToDouble(Order::getAmount)
+                .average();
+        System.out.println("\n--Average Amount of 'Done' Status--\n"+averageAmountOfDoneStatus.orElseThrow());
+
+        //Single most expensive Done order
+        Optional<Order> mostExpensive = orderList.stream()
+                .filter(i -> i.getStatus().equalsIgnoreCase("Done"))
+                .max(Comparator.comparing(Order::getAmount));
+        mostExpensive.ifPresent(order->{
+            System.out.println("\n--Most Expensive Done Order--\nCustomer Name: "+order.getCustomerName() +
+                    "\nAmount: "+ order.getAmount());
+        });
 
 
     }
+
 }
