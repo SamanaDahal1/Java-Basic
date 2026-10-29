@@ -48,5 +48,9 @@ public class Main {
         System.out.println("\n--Grouping By Department--");
         groupByDepartment.forEach((key ,value)-> System.out.println("Department: "+key+
                 "\nEmployee Name: "+value.stream().map(Employee::getName).toList()+"\n"));
+        employeeService.increaseSalary("IT",15);
+        System.out.println("\n--Increase Salary --");
+        employeeService.displayAllEmp();
+
     }
 }

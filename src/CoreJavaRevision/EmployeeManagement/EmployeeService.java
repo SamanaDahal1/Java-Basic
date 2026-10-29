@@ -26,7 +26,7 @@ public class EmployeeService {
     }
     double totalSalary(){
         return listEmployee.values().stream()
-                .mapToDouble(emp -> emp.getSalary())
+                .mapToDouble(Employee::getSalary)
                 .sum();
     }
     double averageSalary(){
@@ -50,6 +50,12 @@ public class EmployeeService {
                 .collect(Collectors.groupingBy(Employee::getDepartment));
 
     }
+    void increaseSalary(String department,double percentage){
+        listEmployee.values().stream()
+                .filter(i -> i.getDepartment().equalsIgnoreCase(department))
+                .forEach(employee -> employee.setSalary(employee.getSalary()+employee.getSalary()*percentage/100));
+    }
+
     void displayAllEmp(){
         listEmployee.forEach((integer, employee) -> {
             System.out.println("Employee Id: "+employee.getId()+
