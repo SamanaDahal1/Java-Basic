@@ -1,6 +1,7 @@
 package CoreJavaRevision.OrderAnalysis;
 
 import java.util.*;
+import java.util.stream.Stream;
 
 public class Main {
     public static void main(String[] args) {
@@ -58,7 +59,7 @@ public class Main {
                 .sorted(Comparator.comparingDouble(Order::getAmount).reversed())
                 .limit(3)
                 .toList();
-        System.out.println("\n--Top 3 Expensive Order");
+        System.out.println("\n--Top 3 Expensive Order--");
         for(Order order : expensiveOrder){
             System.out.println("Customer Name: "+order.getCustomerName() +
                     "\nAmount: "+ order.getAmount());
@@ -117,7 +118,38 @@ public class Main {
             System.out.println("\n--Belong to Electronics--\nCustomer Name: "+order.getCustomerName() +
                     "\nAmount: "+ order.getAmount());
         });
+        //find cheapest order whose status is Done
+        Optional<Order> cheapestOrder = orderList.stream()
+                .filter(i -> i.getStatus().equalsIgnoreCase("Done"))
+                .min(Comparator.comparing(Order::getAmount));
+        cheapestOrder.ifPresent(order->{
+            System.out.println("\n--Cheapest Order--\nCustomer Name: "+order.getCustomerName() +
+                    "\nAmount: "+ order.getAmount());
+        });
+        //count how many orders have status Done
+        long doneCount = orderList.stream()
+                .filter(i -> i.getStatus().equalsIgnoreCase("Done"))
+                .count();
+        System.out.println("\n--Total Number of Done Status--\n"+doneCount);
 
+        //Sort all orders from highest amount to lowest amount, skip the 2 most expensive orders, then print the next 3 orders
+        List<Order> sortSkipLimit = orderList.stream()
+                .sorted(Comparator.comparingDouble(Order::getAmount).reversed())
+                .skip(2)
+                .limit(3)
+                .toList();
+        System.out.println("\n--Sorted,Skip Highest 2 and Print 3--");
+        for(Order order : sortSkipLimit) {
+            System.out.println("Customer Name: " + order.getCustomerName() +
+                    "\nAmount: " + order.getAmount()+"\n");
+
+        }
+        //Using reduce, calculate total amount of all Done
+        Double totalUsingReduce = orderList.stream()
+                .filter(i -> i.getStatus().equalsIgnoreCase("Done"))
+                .map(Order::getAmount)
+                .reduce(0.0, Double::sum);
+        System.out.println("\n--Total 'Done' Status Amount--\n"+totalUsingReduce);
 
     }
 
