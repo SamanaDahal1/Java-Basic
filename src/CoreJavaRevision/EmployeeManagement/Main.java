@@ -51,6 +51,9 @@ public class Main {
         employeeService.increaseSalary("IT",15);
         System.out.println("\n--Increase Salary --");
         employeeService.displayAllEmp();
+        System.out.println("\n--Removing Employee Detail By Id--");
+        employeeService.removeById(2);
+        employeeService.displayAllEmp();
 
     }
 }

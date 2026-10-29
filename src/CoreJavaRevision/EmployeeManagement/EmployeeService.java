@@ -55,6 +55,10 @@ public class EmployeeService {
                 .filter(i -> i.getDepartment().equalsIgnoreCase(department))
                 .forEach(employee -> employee.setSalary(employee.getSalary()+employee.getSalary()*percentage/100));
     }
+    void removeById (int id){
+        listEmployee.remove(id);
+
+    }
 
     void displayAllEmp(){
         listEmployee.forEach((integer, employee) -> {
