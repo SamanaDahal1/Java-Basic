@@ -39,6 +39,11 @@ public class EmployeeService {
                 .max(Comparator.comparing(Employee::getSalary))
                 .orElse(null);
     }
+    List<Employee> sortedEmpSalary(){
+       return listEmployee.values().stream()
+                .sorted(Comparator.comparing(Employee::getSalary))
+                .toList();
+    }
     void displayAllEmp(){
         listEmployee.forEach((integer, employee) -> {
             System.out.println("Employee Id: "+employee.getId()+

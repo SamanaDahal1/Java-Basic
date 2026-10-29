@@ -39,6 +39,9 @@ public class Main {
         else {
             System.out.println("No Employees Found");
         }
-
+        List<Employee> sortedBySalary = employeeService.sortedEmpSalary();
+        System.out.println("\n--Sorting By Salary--");
+        sortedBySalary.forEach((emp) -> System.out.println("Employee Name: "+emp.getName()+
+                "\nEmployee Salary: "+emp.getSalary()+"\n"));
     }
 }
