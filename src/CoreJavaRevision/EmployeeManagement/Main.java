@@ -3,6 +3,7 @@ package CoreJavaRevision.EmployeeManagement;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
 
 public class Main {
     public static void main(String[] args) {
@@ -67,5 +68,8 @@ public class Main {
             System.out.println("Employee Name: "+emp.getName()+
                     "\nEmployee Salary: "+ emp.getSalary()+"\n");
         });
+        Predicate<Employee> departmentCondition =i->i.getDepartment().equalsIgnoreCase(department);
+        Predicate<Employee> salaryCondition =i->i.getSalary()>salary;
+        List<Employee> result1=employeeService.searchEmployees(departmentCondition.and(salaryCondition));
     }
 }
