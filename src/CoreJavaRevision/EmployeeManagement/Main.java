@@ -59,9 +59,10 @@ public class Main {
         System.out.println("\n--Removing Employee Detail By Id--");
         employeeService.removeById(2);
         employeeService.displayAllEmp();
-        double salary = 45500;
-        List<Employee> result = employeeService.searchEmployees(i->i.getSalary()==salary);
-        System.out.println("--Salary Search--");
+        double salary = 80000;
+        String department="IT";
+        List<Employee> result = employeeService.searchEmployees(i->i.getDepartment().equalsIgnoreCase(department)&&i.getSalary()>salary);
+        System.out.println("--Search--");
         result.forEach((emp) -> {
             System.out.println("Employee Name: "+emp.getName()+
                     "\nEmployee Salary: "+ emp.getSalary()+"\n");
