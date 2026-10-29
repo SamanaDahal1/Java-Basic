@@ -3,6 +3,7 @@ package CoreJavaRevision.EmployeeManagement;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Predicate;
 
 public class Main {
@@ -17,12 +18,13 @@ public class Main {
            System.out.println( e.getMessage());
         }
         employeeService.displayAllEmp();
-        Employee employee =employeeService.searchId(1);
-        System.out.println("--Found Employee--" +
-                "\nEmployee Id: "+employee.getId()+
-                "\nEmployee Name: "+employee.getName()+
-                "\nDepartment: "+employee.getDepartment()+
-                "\nSalary: "+employee.getSalary()+"\n");
+        Optional<Employee> employee =employeeService.searchId(10);
+        employee.ifPresentOrElse(i->{System.out.println("--Found Employee--" +
+                "\nEmployee Id: "+i.getId()+
+                "\nEmployee Name: "+i.getName()+
+                "\nDepartment: "+i.getDepartment()+
+                "\nSalary: "+i.getSalary()+"\n");},()->{System.out.println("Employee Not Found\n");});
+
         List<Employee> employeeList=employeeService.searchDepartment("iT");
         System.out.println("--Department Search--");
         employeeList.forEach((emp) -> {

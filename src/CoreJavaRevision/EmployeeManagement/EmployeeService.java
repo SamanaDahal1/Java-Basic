@@ -14,8 +14,8 @@ public class EmployeeService {
         listEmployee.put(employee.getId(),employee);
         }
     }
-    Employee  searchId (int id){
-        return listEmployee.get(id);
+    Optional<Employee>  searchId (int id){
+       return Optional.ofNullable( listEmployee.get(id));
     }
     List<Employee> searchDepartment(String department){
         List<Employee> list = listEmployee.values().stream()
