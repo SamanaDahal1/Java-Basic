@@ -1,6 +1,7 @@
 package CoreJavaRevision.EmployeeManagement;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class EmployeeService {
     Map<Integer,Employee> listEmployee=new HashMap<>();
@@ -43,6 +44,11 @@ public class EmployeeService {
        return listEmployee.values().stream()
                 .sorted(Comparator.comparing(Employee::getSalary))
                 .toList();
+    }
+    Map<String,List<Employee>> groupByDep(){
+        return listEmployee.values().stream()
+                .collect(Collectors.groupingBy(Employee::getDepartment));
+
     }
     void displayAllEmp(){
         listEmployee.forEach((integer, employee) -> {

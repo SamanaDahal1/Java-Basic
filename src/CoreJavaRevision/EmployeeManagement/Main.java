@@ -2,6 +2,7 @@ package CoreJavaRevision.EmployeeManagement;
 
 import java.util.EnumMap;
 import java.util.List;
+import java.util.Map;
 
 public class Main {
     public static void main(String[] args) {
@@ -43,5 +44,9 @@ public class Main {
         System.out.println("\n--Sorting By Salary--");
         sortedBySalary.forEach((emp) -> System.out.println("Employee Name: "+emp.getName()+
                 "\nEmployee Salary: "+emp.getSalary()+"\n"));
+        Map<String,List<Employee>> groupByDepartment = employeeService.groupByDep();
+        System.out.println("\n--Grouping By Department--");
+        groupByDepartment.forEach((key ,value)-> System.out.println("Department: "+key+
+                "\nEmployee Name: "+value.stream().map(Employee::getName).toList()+"\n"));
     }
 }
