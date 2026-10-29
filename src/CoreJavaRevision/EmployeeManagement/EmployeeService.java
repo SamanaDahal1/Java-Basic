@@ -30,9 +30,14 @@ public class EmployeeService {
     }
     double averageSalary(){
          return listEmployee.values().stream()
-                .mapToDouble(i -> i.getSalary())
+                .mapToDouble(Employee::getSalary)
                 .average()
                  .orElse(0.0);
+    }
+    Employee highestSalary(){
+        return listEmployee.values().stream()
+                .max(Comparator.comparing(Employee::getSalary))
+                .orElse(null);
     }
     void displayAllEmp(){
         listEmployee.forEach((integer, employee) -> {

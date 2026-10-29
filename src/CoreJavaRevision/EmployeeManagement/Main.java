@@ -1,5 +1,6 @@
 package CoreJavaRevision.EmployeeManagement;
 
+import java.util.EnumMap;
 import java.util.List;
 
 public class Main {
@@ -31,5 +32,13 @@ public class Main {
         System.out.println("--Total Salary of all--\n"+totalSalary+"\n");
         double averageSalary = employeeService.averageSalary();
         System.out.println("--Average Salary--\n"+averageSalary+"\n");
+        Employee highestSalary = employeeService.highestSalary();
+        if(highestSalary!=null){
+            System.out.println("--Highest Salary--"+"\nEmployee Name: "+highestSalary.getName()+"\nSalary: "+highestSalary.getSalary());
+        }
+        else {
+            System.out.println("No Employees Found");
+        }
+
     }
 }
