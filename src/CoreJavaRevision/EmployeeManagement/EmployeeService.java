@@ -1,6 +1,7 @@
 package CoreJavaRevision.EmployeeManagement;
 
 import java.util.*;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class EmployeeService {
@@ -63,6 +64,11 @@ public class EmployeeService {
     void removeById (int id){
         listEmployee.remove(id);
 
+    }
+    List<Employee> searchEmployees(Predicate<Employee> condition){
+        return listEmployee.values().stream()
+                .filter(condition)
+                .toList();
     }
 
     void displayAllEmp(){

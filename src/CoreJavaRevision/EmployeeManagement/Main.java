@@ -10,7 +10,6 @@ public class Main {
         try {
             employeeService.addEmployee(new Employee(1,"Sashi","IT",90000));
             employeeService.addEmployee(new Employee(2,"ashi","IT",85000));
-            employeeService.addEmployee(new Employee(1,"Sas","Finance",45500));
             employeeService.addEmployee(new Employee(3,"Sas","Finance",45500));
         }
         catch (DuplicateEmployeeException e){
@@ -60,7 +59,12 @@ public class Main {
         System.out.println("\n--Removing Employee Detail By Id--");
         employeeService.removeById(2);
         employeeService.displayAllEmp();
-
-
+        double salary = 45500;
+        List<Employee> result = employeeService.searchEmployees(i->i.getSalary()==salary);
+        System.out.println("--Salary Search--");
+        result.forEach((emp) -> {
+            System.out.println("Employee Name: "+emp.getName()+
+                    "\nEmployee Salary: "+ emp.getSalary()+"\n");
+        });
     }
 }
