@@ -75,6 +75,10 @@ public class EmployeeService {
                 .collect(Collectors.groupingBy(Employee::getDepartment,Collectors.counting()));
 
     }
+    Map<String,Optional<Employee>> highestSalaryOfEachDep() {
+       return listEmployee.values().stream()
+                .collect(Collectors.groupingBy(Employee::getDepartment,Collectors.maxBy(Comparator.comparing(Employee::getSalary))));
+    }
 
     void displayAllEmp(){
         listEmployee.forEach((integer, employee) -> {

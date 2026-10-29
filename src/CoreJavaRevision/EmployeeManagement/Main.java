@@ -76,5 +76,15 @@ public class Main {
         List<Employee> result1=employeeService.searchEmployees(departmentCondition.and(salaryCondition));
         Map<String,Long> totalEmpPerDep= employeeService.countEmp();
         System.out.println(totalEmpPerDep);
-    }
+        Map<String,Optional<Employee>>highestSalInEachDep = employeeService.highestSalaryOfEachDep();
+        System.out.println("\n--Highest Salary per Department--");
+                highestSalInEachDep.forEach((dep, emp) -> {
+            emp.ifPresent(empl -> {
+                System.out.println("\nDepartment: " + dep +
+                                "\nEmployee Name: " + empl.getName() +
+                                "\nEmployee Salary: " + empl.getSalary());
+            });
+        });
+
+}
 }
