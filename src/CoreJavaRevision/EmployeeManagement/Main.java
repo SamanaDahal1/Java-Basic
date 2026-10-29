@@ -13,6 +13,7 @@ public class Main {
             employeeService.addEmployee(new Employee(1,"Sashi","IT",90000));
             employeeService.addEmployee(new Employee(2,"ashi","IT",85000));
             employeeService.addEmployee(new Employee(3,"Sas","Finance",45500));
+            employeeService.addEmployee(new Employee(4,"Sus","IT",48900));
         }
         catch (DuplicateEmployeeException e){
            System.out.println( e.getMessage());
@@ -73,5 +74,7 @@ public class Main {
         Predicate<Employee> departmentCondition =i->i.getDepartment().equalsIgnoreCase(department);
         Predicate<Employee> salaryCondition =i->i.getSalary()>salary;
         List<Employee> result1=employeeService.searchEmployees(departmentCondition.and(salaryCondition));
+        Map<String,Long> totalEmpPerDep= employeeService.countEmp();
+        System.out.println(totalEmpPerDep);
     }
 }

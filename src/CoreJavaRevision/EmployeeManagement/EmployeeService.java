@@ -70,6 +70,11 @@ public class EmployeeService {
                 .filter(condition)
                 .toList();
     }
+    Map<String,Long> countEmp (){
+       return listEmployee.values().stream()
+                .collect(Collectors.groupingBy(Employee::getDepartment,Collectors.counting()));
+
+    }
 
     void displayAllEmp(){
         listEmployee.forEach((integer, employee) -> {
