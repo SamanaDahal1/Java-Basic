@@ -10,6 +10,7 @@ public class Order {
     Order(int id,String customerName,String category,double amount,String status){
         this.id=id;
         this.customerName=customerName;
+        this.category=category;
         this.amount=amount;
         this.status=status;
     }

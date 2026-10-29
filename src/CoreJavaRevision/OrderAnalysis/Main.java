@@ -85,6 +85,38 @@ public class Main {
             System.out.println("\n--Most Expensive Done Order--\nCustomer Name: "+order.getCustomerName() +
                     "\nAmount: "+ order.getAmount());
         });
+        //check whether there is atleast one Pending" order with an amount greater than 40,000
+        boolean pending = orderList.stream()
+                .anyMatch(i -> i.getStatus().equalsIgnoreCase("Pending") && i.getAmount() > 40000);
+        System.out.println("\n--Pending order (amount greater than 40000)--\n"+ pending);
+
+        //check whether All "Done" orders have amount greater than 4000
+        boolean allDoneOrderAbove = orderList.stream()
+                .filter(i -> i.getStatus().equalsIgnoreCase("Done"))
+                .allMatch( i->i.getAmount() > 4000);
+        System.out.println("\n--Done order (all order amount greater than 40000)--\n"+ allDoneOrderAbove);
+
+        //check whether non of order have amount greater than 100000
+        boolean nonOrderAbove = orderList.stream()
+                .noneMatch(i -> i.getAmount() > 100000);
+        System.out.println("\n--No Order (all order amount greater than 100000)--\n"+ nonOrderAbove);
+
+        //find first "Cancelled order
+        Optional<Order> cancelled = orderList.stream()
+                .filter(i -> i.getStatus().equalsIgnoreCase("Cancelled"))
+                .findFirst();
+        cancelled.ifPresent(order->{
+            System.out.println("\n--First Cancelled Order--\nCustomer Name: "+order.getCustomerName() +
+                    "\nAmount: "+ order.getAmount());
+        });
+        //find any order belonging to Electronic
+        Optional<Order> electronic = orderList.stream()
+                .filter(i -> i.getCategory().equalsIgnoreCase("Electronics"))
+                .findAny();
+        electronic.ifPresent(order->{
+            System.out.println("\n--Belong to Electronics--\nCustomer Name: "+order.getCustomerName() +
+                    "\nAmount: "+ order.getAmount());
+        });
 
 
     }
