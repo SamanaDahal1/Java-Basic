@@ -5,9 +5,9 @@ import java.util.stream.Collectors;
 
 public class EmployeeService {
     Map<Integer,Employee> listEmployee=new HashMap<>();
-    void addEmployee(Employee employee){
+    void addEmployee(Employee employee)throws DuplicateEmployeeException{
         if(listEmployee.containsKey(employee.getId())){
-            System.out.println("This ID Employee Already Exist");
+            throw new DuplicateEmployeeException("This ID Employee Already Exist");
         }
         else {
         listEmployee.put(employee.getId(),employee);
