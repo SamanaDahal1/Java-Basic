@@ -151,6 +151,14 @@ public class Main {
                 .reduce(0.0, Double::sum);
         System.out.println("\n--Total 'Done' Status Amount--\n"+totalUsingReduce);
 
+        //Largest order amount using reduce
+        Double largestOrderAmount = orderList.stream()
+                .map(Order::getAmount)
+                .reduce(Double::max)
+                .orElse(0.0);
+        System.out.println("\n--Largest Order Amount Using Reduce--\n"+largestOrderAmount);
+
+
     }
 
 }
